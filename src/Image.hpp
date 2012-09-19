@@ -19,7 +19,12 @@ private :
 	~Image();
 	void afficher();
 	int getPixel(int x, int y) const;
+	int getPixel(int v) const;
 	void setPixel(int x, int y, int valeur);
+
+	int getValeurMax() const;
+	int getLargeur() const;
+	int getHauteur() const;
 
 	void load(const std::string& fichier);
 	void save(const std::string& fichier);

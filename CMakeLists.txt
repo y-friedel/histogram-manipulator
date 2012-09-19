@@ -11,8 +11,7 @@ include_directories(src)
 file(
 	GLOB_RECURSE
 	mmti_sources
-	main.cpp
-	./src/Image.cpp
+	./src/*.cpp
 	
 )
 

@@ -29,15 +29,36 @@ int Image::getPixel(int x, int y) const
 {
 	return valeurs[x + largeur*y];
 }
+
+int Image::getPixel(int v) const
+{
+	return valeurs[v];
+}
 	
 void Image::setPixel(int x, int y, int valeur)
 {
 	valeurs[x + largeur*y] = valeur;
 }
 
+int Image::getValeurMax() const
+{
+	return valeur_max;
+}
+
+int Image::getLargeur() const
+{
+	return largeur;
+}
+
+int Image::getHauteur() const
+{
+	return hauteur;
+}
+
+
 void Image::load(const std::string& fichier)
 {
-	std::cout << "test " << fichier << std::endl;
+	std::cout << "load " << fichier << std::endl;
 
 	std::string buffer_string = ""; //Pour récupérer les donnees
 	char* cfichier = (char*)fichier.c_str();
@@ -65,6 +86,7 @@ void Image::load(const std::string& fichier)
 		hauteur = atoi(buffer_string.c_str());
 		
 		std::getline(fichierPGM, contenu);  // Valeur max
+		valeur_max = atoi(contenu.c_str());		
 
 		for(int i=0; i< largeur*hauteur; i++)
 		{
