@@ -17,15 +17,13 @@ int main(int argc, char** argv)
 
 	im->load(input.c_str());
 
+	//Histogramme* histo = new Histogramme(im);
 	//im->afficher();
+	//im->negatif();
+	//histo->exporter_PGM(exp.c_str());
+	im->saveBin(output.c_str());
 
-	Histogramme* histo = new Histogramme(im);
-	histo->afficher();
-	im->negatif();
-	histo->exporter_PGM(exp.c_str());
-	im->save(output.c_str());
-
-	delete(histo);
+	//delete(histo);
 	delete(im);
 
 	return 0;

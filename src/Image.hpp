@@ -27,7 +27,8 @@ private :
 	int getHauteur() const;
 
 	void load(const std::string& fichier);
-	void save(const std::string& fichier);
+	void saveAscii(const std::string& fichier);
+	void saveBin(const std::string& fichier);
 
 	//Filtre a effacer
 	void negatif();

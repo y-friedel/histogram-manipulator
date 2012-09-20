@@ -70,37 +70,52 @@ void Image::load(const std::string& fichier)
                 std::getline(fichierPGM, contenu);  // on met dans "contenu" la ligne
 		format = (contenu == "P2"); // 1ere ligne = format
 
-		std::getline(fichierPGM, contenu);  // Largeur et hauteur
-		int i=0;		
-		for(i; contenu[i] != ' '; i++) //On isole la largeur
-		{
-			buffer_string += contenu[i];
-		}
+//		std::getline(fichierPGM, contenu);  // Largeur et hauteur
+//		int i=0;		
+//		for(i; contenu[i] != ' '; i++) //On isole la largeur
+//		{
+//			buffer_string += contenu[i];
+//		}
+//
+//		largeur = atoi(buffer_string.c_str());
+//		buffer_string = "";
+//		for(i; contenu[i] != '\0'; i++) //On isole la hauteur
+//		{
+//			buffer_string += contenu[i];
+//		}
+//		hauteur = atoi(buffer_string.c_str());
 
-		largeur = atoi(buffer_string.c_str());
-		buffer_string = "";
-		for(i; contenu[i] != '\0'; i++) //On isole la largeur
-		{
-			buffer_string += contenu[i];
-		}
-		hauteur = atoi(buffer_string.c_str());
-		
+		fichierPGM >> largeur;
+		fichierPGM >> hauteur;
+
 		std::getline(fichierPGM, contenu);  // Valeur max
-		valeur_max = atoi(contenu.c_str());		
-
+		valeur_max = atoi(contenu.c_str());	
+		
+		valeurs.resize(largeur*hauteur);
+		std::getline(fichierPGM, contenu);
+		
+		char temp;
+		unsigned char utemp;
 		for(int i=0; i< largeur*hauteur; i++)
 		{
-			std::getline(fichierPGM, contenu);  // Valeur courante
-			valeurs.push_back(atoi(contenu.c_str()));
+			if(format)
+			{
+				fichierPGM >> valeurs[i];
+				std::getline(fichierPGM, contenu);  // Valeur courante
+			}else{
+				fichierPGM.read(&temp, 1);			
+				utemp = (unsigned char)temp;
+				valeurs[i] = (int)utemp;
+			}
 		}
 
 		
 		
 	}
-
+	std::cout << "load OK" << std::endl;
 }
 
-void Image::save(const std::string& fichier)
+void Image::saveAscii(const std::string& fichier)
 {
 		valeur_max = 255;
 		std::ofstream file;
@@ -109,15 +124,8 @@ void Image::save(const std::string& fichier)
 		file.open(cfichier);
 
 		std::string nom_format;
-		
-		if (format)
-		{
-			nom_format = "P2";
-		}
-		else
-		{
-			nom_format = "P5";
-		}
+		nom_format = "P2";
+
 
 		file << nom_format << std::endl;
 		file << largeur << " " << hauteur << std::endl;
@@ -125,6 +133,31 @@ void Image::save(const std::string& fichier)
 
 		for(std::vector<int>::iterator i = valeurs.begin(); i != valeurs.end(); ++i) {
      			file << *i << std::endl;
+		}
+		file.close();
+		
+}
+
+void Image::saveBin(const std::string& fichier)
+{
+		valeur_max = 255;
+		std::ofstream file;
+		char* cfichier = (char*)fichier.c_str();
+
+		file.open(cfichier);
+
+		std::string nom_format;
+		nom_format = "P5";
+
+
+		file << nom_format << std::endl;
+		file << largeur << " " << hauteur << std::endl;
+		file << valeur_max << std::endl;
+		char temp;
+		unsigned char utemp;
+		for(std::vector<int>::iterator i = valeurs.begin(); i != valeurs.end(); ++i) {
+
+     			file << (char)*i;
 		}
 		file.close();
 		
