@@ -14,8 +14,8 @@ private :
 
  public :
 	Image();
-	Image(std::string fichier);
 	Image(Image* im);
+	Image(std::string fichier);
 	~Image();
 	void afficher();
 	int getPixel(int x, int y) const;

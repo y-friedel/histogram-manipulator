@@ -13,18 +13,20 @@ int main(int argc, char** argv)
 		std::string output = std::string(argv[2]);
 
 	Image* im = new Image();
-	std::string exp = "./data/histo.pgm";
+	std::string exp = "./data/histoV2.pgm";
 
 	im->load(input.c_str());
-
-	//Histogramme* histo = new Histogramme(im);
+	Image* imcpy = new Image(im);
+	Histogramme* histo = new Histogramme(im);
 	//im->afficher();
 	//im->negatif();
-	//histo->exporter_PGM(exp.c_str());
-	im->saveBin(output.c_str());
+	histo->exporter_PGM(exp.c_str());
+	im->negatif();
+	imcpy->saveBin(output.c_str());
 
-	//delete(histo);
+	delete(histo);
 	delete(im);
+	delete(imcpy);
 
 	return 0;
 }
