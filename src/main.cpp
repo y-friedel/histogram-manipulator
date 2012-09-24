@@ -22,8 +22,18 @@ int main(int argc, char** argv)
 	//im->negatif();
 	histo->exporter_PGM(exp.c_str());
 	im->negatif();
-	imcpy->saveBin(output.c_str());
+//	imcpy->saveBin(output.c_str());
+	imcpy->saveAscii(output.c_str());
 
+	histo->save("Histogramme");
+
+	Histogramme* newHisto = new Histogramme("Histogramme");
+
+	newHisto->save("Histogramme2");
+	
+	std::cout << "TEST : " << newHisto->getValeurMax() << std::endl;
+	std::cout << "TESTold : " << histo->getValeurMax() << std::endl;
+	
 	delete(histo);
 	delete(im);
 	delete(imcpy);

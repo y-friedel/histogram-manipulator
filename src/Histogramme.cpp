@@ -4,16 +4,61 @@
 
 Histogramme::Histogramme(Image* _img)
 {
-	img = _img;
-	valeur_max = img->getValeurMax();
+	valeur_max = _img->getValeurMax();
 	valeurs.resize(valeur_max+1);
 	fill(valeurs.begin(), valeurs.end(), 0);
-	for(int i = 0; i<(img->getLargeur() * img->getHauteur()); i++)
+	for(int i = 0; i<(_img->getLargeur() * _img->getHauteur()); i++)
 	{
-		valeurs[img->getPixel(i)] = valeurs[img->getPixel(i)] + 1;
+		valeurs[_img->getPixel(i)] = valeurs[_img->getPixel(i)] + 1;
 		//std::cout << /*img->getPixel(i)*/ img->getValeurMax() << std::endl;
 	}
 
+}
+
+
+Histogramme::Histogramme(Histogramme* histo)
+{
+
+	valeur_max = histo->valeur_max;
+	for(std::vector<int>::iterator i = histo->valeurs.begin(); i != histo->valeurs.end(); i++) 
+	{
+		valeurs.push_back(*i);
+	}
+
+}
+
+Histogramme::Histogramme(const std::string& fichier)
+{
+	std::cout << "load " << fichier << std::endl;
+
+	std::string buffer_string = ""; //Pour récupérer les donnees
+	char* cfichier = (char*)fichier.c_str();
+	std::ifstream fichierHisto(cfichier, std::ios::in);  // on ouvre en lecture
+ 	
+	int val_file;
+        if(fichierHisto)  // si l'ouverture a fonctionné
+        {
+                std::string contenu;  // déclaration d'une chaîne qui contiendra la ligne lue
+          
+		//1ere iteration
+		fichierHisto >> val_file;
+		fichierHisto >> val_file;
+
+		while(!fichierHisto.eof())
+		{
+			valeurs.push_back(val_file);	
+			std::getline(fichierHisto, contenu);
+			fichierHisto >> val_file;
+			fichierHisto >> val_file;
+		}
+		
+		
+		
+	}
+	
+	valeur_max = valeurs.size()-1;
+	
+	std::cout << "load OK" << std::endl;
 }
 
 Histogramme::~Histogramme()
@@ -94,4 +139,36 @@ void Histogramme::exporter_PGM(const std::string& fichier)
 		}
 
 		file.close();
+}
+
+void Histogramme::save(const std::string& fichier)
+{
+	std::ofstream file;
+	char* cfichier = (char*)fichier.c_str();
+
+	file.open(cfichier);
+
+	int compt = 0;
+	for(std::vector<int>::iterator i = valeurs.begin(); i != valeurs.end(); i++) 
+	{
+		
+		file << compt << '\t' << *i << std::endl;
+		compt++;
+	}
+	
+	
+	file.close();
+	
+
+}
+
+
+int Histogramme::getValeur(int intensite) const
+{
+	return valeurs[intensite];
+}
+
+int Histogramme::getValeurMax() const
+{
+	return valeur_max;
 }
