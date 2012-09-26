@@ -1,4 +1,4 @@
-# Install script for directory: /home/etu/r/p1209771/Bureau/MMTI/histogram-manipulator
+# Install script for directory: /home/rere/MMTI/histogram-manipulator
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/etu/r/p1209771/Bureau/MMTI/histogram-manipulator/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/rere/MMTI/histogram-manipulator/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/etu/r/p1209771/Bureau/MMTI/histogram-manipulator/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/rere/MMTI/histogram-manipulator/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

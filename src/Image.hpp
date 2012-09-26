@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+
+
 class Image{
 private :
 	bool format;
@@ -21,6 +23,7 @@ private :
 	int getPixel(int x, int y) const;
 	int getPixel(int v) const;
 	void setPixel(int x, int y, int valeur);
+	void setPixel(int v, int valeur);
 
 	int getValeurMax() const;
 	int getLargeur() const;
@@ -29,6 +32,8 @@ private :
 	void load(const std::string& fichier);
 	void saveAscii(const std::string& fichier);
 	void saveBin(const std::string& fichier);
+	
+	
 
 	//Filtre a effacer
 	void negatif();

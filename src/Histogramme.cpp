@@ -16,6 +16,8 @@ Histogramme::Histogramme(Image* _img)
 }
 
 
+
+
 Histogramme::Histogramme(Histogramme* histo)
 {
 
@@ -26,6 +28,19 @@ Histogramme::Histogramme(Histogramme* histo)
 	}
 
 }
+
+
+Histogramme::Histogramme(std::vector<int> _valeurs)
+{
+
+	for(std::vector<int>::iterator i = _valeurs.begin(); i != _valeurs.end(); i++) 
+	{
+		valeurs.push_back(*i);
+	}
+
+	valeur_max = valeurs.size();
+}
+
 
 Histogramme::Histogramme(const std::string& fichier)
 {
@@ -172,3 +187,67 @@ int Histogramme::getValeurMax() const
 {
 	return valeur_max;
 }
+
+
+int Histogramme::getIntensiteMin() const
+{
+	int minimum = -1; 
+
+	for(int i=0; i<=valeur_max; i++)
+	{
+		if(valeurs[i]>0)
+		{
+			minimum = i;
+			break;
+		}
+	}
+	
+	return minimum;
+}
+
+
+int Histogramme::getIntensiteMax() const
+{
+	int maximum = -1; 
+
+	for(int i=valeur_max; i>=0; i++)
+	{
+		if(valeurs[i]>0)
+		{
+			maximum = i;
+			break;
+		}
+	}
+	
+	return maximum;
+}
+
+
+
+
+
+Histogramme* Histogramme::cumul()
+{	
+	std::vector<int> _valeurs = std::vector<int>();
+
+
+	for(int i=0; i<=valeur_max; i++)
+	{
+		_valeurs.push_back(valeurs[i]);
+	}
+
+	for(int i=1; i<=valeur_max; i++)
+	{
+		_valeurs[i] = _valeurs[i-1]+ _valeurs[i];
+	}
+
+	Histogramme* histo  = new Histogramme(_valeurs);
+
+	return histo;
+}
+
+
+
+
+
+

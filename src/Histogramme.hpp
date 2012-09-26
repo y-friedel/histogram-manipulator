@@ -13,13 +13,19 @@ private :
  public :
 	Histogramme(Image* img);
 	Histogramme(Histogramme* histo);
+	Histogramme(std::vector<int> _valeurs);
 	Histogramme(const std::string& fichier);
 	~Histogramme();
 
 	void afficher();
 	int getValeur(int intensite) const;
 	int getValeurMax() const;
+	int getIntensiteMin() const;
+	int getIntensiteMax() const;
+	
+	
 
+	Histogramme* cumul();
 
 	void exporter_PGM(const std::string& fichier);
 	void exporter_TXT(const std::string& fichier);

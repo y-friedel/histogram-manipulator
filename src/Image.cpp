@@ -50,6 +50,11 @@ void Image::setPixel(int x, int y, int valeur)
 	valeurs[x + largeur*y] = valeur;
 }
 
+void Image::setPixel(int v, int valeur)
+{
+	valeurs[v] = valeur;
+}
+
 int Image::getValeurMax() const
 {
 	return valeur_max;
@@ -164,5 +169,4 @@ void Image::negatif()
 		*i = 255 - *i;
 	}
 }
-
-	
+/**/
