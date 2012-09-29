@@ -21,14 +21,16 @@ public :
 	int getValeur(int intensite);
 
 
-	void normalisation(Histogramme* depart);
-	void etirement(Histogramme* depart);
-	void egalisation(Image* depart);
-	
-	void specification(Image* depart, Histogramme* cible);
+	Image* negatif(Image* depart);
+	Image* etirement(Histogramme* depart);
 	
 	
-	void correspondance(Image* image);
+	Image* egalisation(Image* depart);
+	
+	Image* specification(Image* depart, Histogramme* cible);
+	
+	
+	Image* correspondance(Image* image);
 
 	void afficher();
 

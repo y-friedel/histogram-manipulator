@@ -162,11 +162,5 @@ void Image::saveBin(const std::string& fichier)
 		
 }
 
-void Image::negatif()
-{
-	for(std::vector<int>::iterator i = valeurs.begin(); i != valeurs.end(); i++)
-	{
-		*i = 255 - *i;
-	}
-}
+
 /**/

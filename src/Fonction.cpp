@@ -24,17 +24,24 @@ int Fonction::getValeur(int intensite)
 void Fonction::afficher()
 {
 
-	for(std::vector<int>::iterator i = valeurs.begin(); i != valeurs.end(); ++i) 
+	for(int i=0; i<=valeur_max; i++)
 	{
-	     	std::cout << *i << std::endl;
+	     	std::cout << i << " >> "<< valeurs[i] << std::endl;
 	}
 
 }
 
-
+Image* Fonction::negatif(Image* image)
+{
+	for(int i=0; i<=valeur_max; i++)
+	   valeurs[i] = 255-i;
+  
+	Image* resultat = correspondance(image);
+	return resultat;
+}
 
 /*
-void Fonction::etirement(Histogramme* depart)
+Image* Fonction::etirement(Histogramme* depart)
 {
 	int intensiteMax = depart->getIntensiteMax();
 	int intensiteMin = depart->getIntensiteMin();
@@ -46,10 +53,14 @@ void Fonction::etirement(Histogramme* depart)
 
 	valeurs[0] = depart->getValeur(intensiteMin);
 
-	for (int i=1; i<=tailleDepart;i= i++)
+	for (int i=1; i<=tailleDepart;i= (valeur_max/(intensiteMax-intensiteMin))*(i-intensiteMin))
 	{
-		valeurs[i] = (valeur_max/(intensiteMax-intensiteMin))*(i-intensiteMin);
+		valeurs[i] = ;
 	}
+	
+	//On appelle la fonction de correspondance
+	Image* resultat = correspondance(image);
+	return resultat;
 	
 }
 */
@@ -59,77 +70,81 @@ void Fonction::etirement(Histogramme* depart)
 
 
 
-void Fonction::specification(Image* depart, Histogramme* cible)
+Image* Fonction::specification(Image* depart, Histogramme* cible)
 {
-	
-	Histogramme* cumulCible;
+	//On calcul l'histogramme cumulé de l'histogramme de depart
 	Histogramme* cumulDepart = new Histogramme(depart);
-	cumulDepart->exporter_PGM("Depart.pgm");
-
-	cumulCible = cible->cumul();	
 	cumulDepart = cumulDepart->cumul();	
 	
+	//On calcul l'histogramme cumulé de l'histogramme cible
+	Histogramme* cumulCible;
+	cumulCible = cible->cumul();			
 	
-	//cumulCible->exporter_PGM("cumulCible.pgm");
-	//cumulDepart->exporter_PGM("CumulDepart.pgm");
-	cible->afficher();
-	//cible->exporter_PGM("cible.pgm");
+	//On applique l'algorithme vu dans le cours
 	
 	int i=0;
 	int j=0;
 
-	while ((i!=valeur_max)&&(j!=valeur_max))
+	while ((i!=valeur_max)&&(j<=valeur_max))
 	{
 
-		while ( cumulCible->getValeur(j) > cumulDepart->getValeur(i))
+		while ( cumulCible->getValeur(j) >= cumulDepart->getValeur(i))
 		{
 			valeurs[i] = j;	
 			i++;
 		}
 		
 		j++;
+		
 	}
 
-	correspondance(depart);
+	//On appelle la fonction de correspondance
+	Image* resultat = correspondance(depart);
+	return resultat;
 	
 }
 
 
-void Fonction::egalisation(Image* image)
+
+
+Image* Fonction::egalisation(Image* image)
 {
-	
+	//On fait l'histogramme de l'image
 	Histogramme* histo = new Histogramme(image);
-	
+	histo->exporter_PGM("Edepart.pgm");
+	//On fait le cumum de l'histogramme de l'image
 	Histogramme* histoCumul;
 	histoCumul = histo->cumul();
 	
+	//le nombre de pixel peut être trouvé grace au cumul d'histogramme (la valeur de fin)
 	int nb_Pixels = histoCumul->getValeur(valeur_max);
 	
-
-	
+	//On construit notre tableau de correspondance à l'aide
+	//de la formule f(k) = 255-255*(k-min)/(max-min) 
 	for(int k=0; k<=valeur_max; k++)
 	{
-	    valeurs[k] = 255-255*histoCumul->getValeur(k)/nb_Pixels;	    
+	    valeurs[k] = 255*histoCumul->getValeur(k)/nb_Pixels;
 	}
 	
+	//On appelle la fonction de correspondance
+	Image* resultat = correspondance(image);
+	return resultat;
 	
-	correspondance(image);
-    
 }
 	
-	
-void Fonction::correspondance(Image* image)
+//Cette fonction se charge de remplacer les pixels dans l'image en fonction du tableau de correspondance
+Image* Fonction::correspondance(Image* image)
 {
-  
-	int nb_Pixels = image->getHauteur()*image->getLargeur();
+	Image* resultat = new Image(image);
+	int nb_Pixels = resultat->getHauteur()*resultat->getLargeur();
 	
-	
+	//On remplace chaque pixel de l'image
 	for(int i=0; i<nb_Pixels; i++)
 	{     
-	     image->setPixel(i, valeurs[image->getPixel(i)]);
+	     resultat->setPixel(i, valeurs[resultat->getPixel(i)]);
 	}
 	
-	image->saveAscii("./data/GNA.pgm");
+	return resultat;
   
 }
 	

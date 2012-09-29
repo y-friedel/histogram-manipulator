@@ -38,7 +38,7 @@ Histogramme::Histogramme(std::vector<int> _valeurs)
 		valeurs.push_back(*i);
 	}
 
-	valeur_max = valeurs.size();
+	valeur_max = valeurs.size()-1;
 }
 
 
