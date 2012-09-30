@@ -22,7 +22,7 @@ public :
 
 
 	Image* negatif(Image* depart);
-	Image* etirement(Histogramme* depart);
+	Image* recadrage(Image* depart);
 	
 	
 	Image* egalisation(Image* depart);

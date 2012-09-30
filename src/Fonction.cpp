@@ -40,34 +40,32 @@ Image* Fonction::negatif(Image* image)
 	return resultat;
 }
 
-/*
-Image* Fonction::etirement(Histogramme* depart)
+
+Image* Fonction::recadrage(Image* depart)
 {
-	int intensiteMax = depart->getIntensiteMax();
-	int intensiteMin = depart->getIntensiteMin();
+	Histogramme* histo = new Histogramme(depart);
+  
+	int intensiteMax = histo->getIntensiteMax();
+	int intensiteMin = histo->getIntensiteMin();
 
 	int tailleDepart = intensiteMax-intensiteMin;
 	
-
-	double frequence = (double)(tailleDepart/valeur_max);
-
-	valeurs[0] = depart->getValeur(intensiteMin);
-
-	for (int i=1; i<=tailleDepart;i= (valeur_max/(intensiteMax-intensiteMin))*(i-intensiteMin))
-	{
-		valeurs[i] = ;
+	//f(k)=255*(k-min)/(max-min)
+	for(int k=0; k<=valeur_max; k++)
+	{	
+	    int difference = k-intensiteMin;
+	    
+	    if ((k-intensiteMin)<0)
+		  difference = 0;
+	    
+	    valeurs[k] = 255*(difference)/tailleDepart;
+	   
 	}
 	
 	//On appelle la fonction de correspondance
-	Image* resultat = correspondance(image);
+	Image* resultat = correspondance(depart);
 	return resultat;
-	
 }
-*/
-
-
-
-
 
 
 Image* Fonction::specification(Image* depart, Histogramme* cible)
@@ -111,7 +109,7 @@ Image* Fonction::egalisation(Image* image)
 {
 	//On fait l'histogramme de l'image
 	Histogramme* histo = new Histogramme(image);
-	histo->exporter_PGM("Edepart.pgm");
+
 	//On fait le cumum de l'histogramme de l'image
 	Histogramme* histoCumul;
 	histoCumul = histo->cumul();

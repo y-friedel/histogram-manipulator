@@ -29,6 +29,8 @@ private :
 	int getLargeur() const;
 	int getHauteur() const;
 
+	Image* filtreMedian();
+	
 	void load(const std::string& fichier);
 	void saveAscii(const std::string& fichier);
 	void saveBin(const std::string& fichier);
