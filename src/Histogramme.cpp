@@ -2,15 +2,22 @@
 #include <iostream>
 #include <fstream>
 
-Histogramme::Histogramme(Image* _img)
+Histogramme::Histogramme()
 {
-	valeur_max = _img->getValeurMax();
+	valeur_max=0;
+	valeurs.resize(0);
+	
+}
+
+Histogramme::Histogramme(const Image& _img)
+{
+	valeur_max = _img.getValeurMax();
 	valeurs.resize(valeur_max+1);
 	fill(valeurs.begin(), valeurs.end(), 0);
-	for(int i = 0; i<(_img->getLargeur() * _img->getHauteur()); i++)
+	for(int i = 0; i<(_img.getLargeur() * _img.getHauteur()); i++)
 	{
-		valeurs[_img->getPixel(i)] = valeurs[_img->getPixel(i)] + 1;
-		//std::cout << /*img->getPixel(i)*/ img->getValeurMax() << std::endl;
+		valeurs[_img.getPixel(i)] = valeurs[_img.getPixel(i)] + 1;
+		//std::cout << /*img.getPixel(i)*/ img.getValeurMax() << std::endl;
 	}
 
 }
@@ -21,11 +28,11 @@ void Histogramme::setValeur(int intensite, int valeur)
 }
 
 
-Histogramme::Histogramme(Histogramme* histo)
+Histogramme::Histogramme(const Histogramme& histo)
 {
 
-	valeur_max = histo->valeur_max;
-	for(std::vector<int>::iterator i = histo->valeurs.begin(); i != histo->valeurs.end(); i++) 
+	valeur_max = histo.valeur_max;
+	for(std::vector<int>::const_iterator i = histo.valeurs.begin(); i != histo.valeurs.end(); i++) 
 	{
 		valeurs.push_back(*i);
 	}
@@ -46,16 +53,15 @@ Histogramme::Histogramme(std::vector<int> _valeurs)
 
 void Histogramme::setNombrePixels(int nombrePixels)
 {
-	Histogramme* histo;
-	histo = cumul();
-	int val_cumul=0;	
-	//int division = nombrePixels/histo->getValeur(valeur_max);
+	Histogramme histo = Histogramme();
+	cumul(histo);
+	int val_cumul=0;
 	int reste;
 
 	for(int i=0; i<=valeur_max; i++)
 	{
 		setValeur(i, nombrePixels*getValeur(i));
-		setValeur(i, getValeur(i)/histo->getValeur(valeur_max));
+		setValeur(i, getValeur(i)/histo.getValeur(valeur_max));
 
 		val_cumul += getValeur(i);
 
@@ -68,8 +74,6 @@ void Histogramme::setNombrePixels(int nombrePixels)
 		reste--;
 	}
 
-
-	delete(histo);
 }
 
 
@@ -257,7 +261,7 @@ int Histogramme::getIntensiteMax() const
 
 
 
-Histogramme* Histogramme::cumul()
+void Histogramme::cumul(Histogramme& histoCumul)
 {	
 	std::vector<int> _valeurs = std::vector<int>();
 
@@ -272,9 +276,7 @@ Histogramme* Histogramme::cumul()
 		_valeurs[i] = _valeurs[i-1]+ _valeurs[i];
 	}
 
-	Histogramme* histo  = new Histogramme(_valeurs);
-
-	return histo;
+	histoCumul = Histogramme(_valeurs);
 }
 
 

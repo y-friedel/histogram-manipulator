@@ -16,8 +16,8 @@ private :
 
  public :
 	Image();
-	Image(Image* im);
-	Image(std::string fichier);
+	Image(const Image& im);
+	Image(const std::string& fichier);
 	~Image();
 	void afficher();
 	int getPixel(int x, int y) const;
@@ -29,7 +29,7 @@ private :
 	int getLargeur() const;
 	int getHauteur() const;
 
-	Image* filtreMedian();
+	Image& filtreMedian();
 	
 	void load(const std::string& fichier);
 	void saveAscii(const std::string& fichier);

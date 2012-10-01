@@ -10,9 +10,10 @@ private :
 	int valeur_max;
 	std::vector<int> valeurs;
 
- public :
-	Histogramme(Image* img);
-	Histogramme(Histogramme* histo);
+ public : 
+	Histogramme();
+	Histogramme(const Image& img);
+	Histogramme(const Histogramme& histo);
 	Histogramme(std::vector<int> _valeurs);
 	Histogramme(const std::string& fichier);
 	~Histogramme();
@@ -26,7 +27,7 @@ private :
 
 	void setNombrePixels(int nombrePixels);	
 
-	Histogramme* cumul();
+	void cumul(Histogramme& histoCumul);
 
 	void exporter_PGM(const std::string& fichier);
 	void exporter_TXT(const std::string& fichier);

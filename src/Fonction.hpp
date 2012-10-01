@@ -19,16 +19,15 @@ public :
 	//Histogramme* aPriori();
 	
 	int getValeur(int intensite);
+	void correspondance(const Image& depart, Image& arrivee);
 
-	Image* negatif(Image* depart);
-	Image* recadrage(Image* depart);
+
+	void negatif(const Image& depart, Image &arrivee);
+	void recadrage(const Image& depart, Image &arrivee);
 	
-	
-	Image* egalisation(Image* depart);	
-	Image* specification(Image* depart, Histogramme* cible);
+	void specification(const Image& depart, Image &arrivee, Histogramme& cible);
+	void egalisation(const Image& depart, Image &arrivee);	
 		
-	Image* correspondance(Image* image);
-
 	void afficher();
 
 };

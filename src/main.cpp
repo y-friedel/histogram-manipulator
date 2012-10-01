@@ -13,72 +13,59 @@ int main(int argc, char** argv)
 		std::string input = std::string(argv[1]);
 		std::string output = std::string(argv[2]);
 
-	Image* im = new Image();
+	Image im = Image();
 	std::string exp = "./data/Hdepart.txt";
 
-	im->load(input.c_str());
+	im.load(input.c_str());
 
-	Image* imcpy = new Image(im);
-	Histogramme* histo = new Histogramme(im);
-	histo->exporter_TXT(exp.c_str());
+	Image imcpy = Image(im);
+	Histogramme histo = Histogramme(im);
+	histo.exporter_TXT(exp.c_str());
 
 //	imcpy->saveBin(output.c_str());
-	imcpy->saveAscii(output.c_str());
-	histo->save("Histogramme");	
+	imcpy.saveAscii(output.c_str());
+	histo.save("Histogramme_esper");	
 
 	std::vector<int> temp = std::vector<int>();
 
 	//histogramme plat pour rs.pgm
 	for(int i=0; i<28;i++)	temp.push_back(237);
 	for(int i=28; i<256;i++)	temp.push_back(238);	  
-	Histogramme* newHisto = new Histogramme(temp);    
+	Histogramme newHisto = Histogramme(temp);    
 
-	newHisto->setNombrePixels(50000);	 
-	newHisto->save("Histogramme2");
+	newHisto.setNombrePixels(50000);	 
+	newHisto.save("Histogramme2");
     
 	
 
 
-	Fonction* fonction = new Fonction(255);
+	Fonction fonction = Fonction(255);
 	
 	
-/*	Image* image = new Image();
-	image->load("./data/bruit2.pgm");
-	Image* image1 = new Image(image);
+	Image image = Image("./data/bruit2.pgm");
+	Image image1 = Image(image);
 	
-	image1 = fonction->specification(im, newHisto);
-	image1->saveAscii("./data/specification.pgm");
+	fonction.specification(im, image1, newHisto);
+	image1.saveAscii("./data/specification.pgm");
 	
-	Histogramme* histo1 = new Histogramme(image1);
-	histo1->exporter_TXT("./data/Hspecification.txt");
+	Histogramme histo1 = Histogramme(image1);
+	histo1.exporter_TXT("./data/Hspecification.txt");
 	
-	image1 = fonction->egalisation(im);
-	image1->saveAscii("./data/egalisation.pgm");
+	fonction.egalisation(im, image1);
+	image1.saveAscii("./data/egalisation.pgm");
 	
-	Histogramme* histo2 = new Histogramme(image1);
-	histo2->exporter_TXT("./data/Hegalisation.txt");	
+	Histogramme histo2 = Histogramme(image1);
+	histo2.exporter_TXT("./data/Hegalisation.txt");	
 	
-	Image* image2;
-	image2 = fonction->recadrage(im);
-	image2->saveAscii("./data/recadrage.pgm");
+	Image image2;
+	fonction.recadrage(im, image2);
+	image2.saveAscii("./data/recadrage.pgm");
 	
-	Histogramme* histo3 = new Histogramme(image2);
-	histo3->exporter_TXT("./data/Hrecadrage.txt");
+	Histogramme histo3 = Histogramme(image2);
+	histo3.exporter_TXT("./data/Hrecadrage.txt");
 	
-	image = image1->filtreMedian();
-	image->saveAscii("./data/median.pgm");*/
-
-	
-	
-	
-	delete(histo);
-	delete(im);
-	delete(imcpy);
-	delete(fonction);
-	//delete(newHisto);
-	/*delete(image);
-	delete(image1);
-	delete(image2);*/
+	//~ image = image1->filtreMedian();
+	//~ image->saveAscii("./data/median.pgm");
 	
 	return 0;
 }
