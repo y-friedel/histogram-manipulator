@@ -20,16 +20,13 @@ public :
 	
 	int getValeur(int intensite);
 
-
 	Image* negatif(Image* depart);
 	Image* recadrage(Image* depart);
 	
 	
-	Image* egalisation(Image* depart);
-	
+	Image* egalisation(Image* depart);	
 	Image* specification(Image* depart, Histogramme* cible);
-	
-	
+		
 	Image* correspondance(Image* image);
 
 	void afficher();

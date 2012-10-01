@@ -29,20 +29,24 @@ int main(int argc, char** argv)
 	std::vector<int> temp = std::vector<int>();
 
 	//histogramme plat pour rs.pgm
-	/*for(int i=0; i<28;i++)	temp.push_back(237);
+	for(int i=0; i<28;i++)	temp.push_back(237);
 	for(int i=28; i<256;i++)	temp.push_back(238);	  
-	Histogramme* newHisto = new Histogramme(temp);     
-	newHisto->save("Histogramme2");*/
+	Histogramme* newHisto = new Histogramme(temp);    
+
+	newHisto->setNombrePixels(50000);	 
+	newHisto->save("Histogramme2");
     
 	
+
+
 	Fonction* fonction = new Fonction(255);
 	
 	
-	Image* image = new Image();
+/*	Image* image = new Image();
 	image->load("./data/bruit2.pgm");
 	Image* image1 = new Image(image);
 	
-/*	image1 = fonction->specification(im, newHisto);
+	image1 = fonction->specification(im, newHisto);
 	image1->saveAscii("./data/specification.pgm");
 	
 	Histogramme* histo1 = new Histogramme(image1);
@@ -63,6 +67,8 @@ int main(int argc, char** argv)
 	
 	image = image1->filtreMedian();
 	image->saveAscii("./data/median.pgm");*/
+
+	
 	
 	
 	delete(histo);

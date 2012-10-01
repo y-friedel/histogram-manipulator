@@ -19,11 +19,12 @@ private :
 
 	void afficher();
 	int getValeur(int intensite) const;
+	void setValeur(int intensite, int valeur);
 	int getValeurMax() const;
 	int getIntensiteMin() const;
 	int getIntensiteMax() const;
-	
-	
+
+	void setNombrePixels(int nombrePixels);	
 
 	Histogramme* cumul();
 

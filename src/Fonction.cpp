@@ -70,9 +70,14 @@ Image* Fonction::recadrage(Image* depart)
 
 Image* Fonction::specification(Image* depart, Histogramme* cible)
 {
+	
+
 	//On calcul l'histogramme cumulé de l'histogramme de depart
 	Histogramme* cumulDepart = new Histogramme(depart);
 	cumulDepart = cumulDepart->cumul();	
+
+	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
+	cible->setNombrePixels(cumulDepart->getValeur(valeur_max));
 	
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	Histogramme* cumulCible;
@@ -85,21 +90,18 @@ Image* Fonction::specification(Image* depart, Histogramme* cible)
 
 	while ((i!=valeur_max)&&(j<=valeur_max))
 	{
-
 		while ( cumulCible->getValeur(j) >= cumulDepart->getValeur(i))
 		{
 			valeurs[i] = j;	
 			i++;
 		}
 		
-		j++;
-		
+		j++;		
 	}
 
 	//On appelle la fonction de correspondance
 	Image* resultat = correspondance(depart);
-	return resultat;
-	
+	return resultat;	
 }
 
 

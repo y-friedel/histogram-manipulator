@@ -15,7 +15,10 @@ Histogramme::Histogramme(Image* _img)
 
 }
 
-
+void Histogramme::setValeur(int intensite, int valeur)
+{
+	valeurs[intensite] = valeur;
+}
 
 
 Histogramme::Histogramme(Histogramme* histo)
@@ -39,6 +42,34 @@ Histogramme::Histogramme(std::vector<int> _valeurs)
 	}
 
 	valeur_max = valeurs.size()-1;
+}
+
+void Histogramme::setNombrePixels(int nombrePixels)
+{
+	Histogramme* histo;
+	histo = cumul();
+	int val_cumul=0;	
+	//int division = nombrePixels/histo->getValeur(valeur_max);
+	int reste;
+
+	for(int i=0; i<=valeur_max; i++)
+	{
+		setValeur(i, nombrePixels*getValeur(i));
+		setValeur(i, getValeur(i)/histo->getValeur(valeur_max));
+
+		val_cumul += getValeur(i);
+
+	}
+	reste = nombrePixels-val_cumul;
+		
+	for(int i=0; reste>0; i++)
+	{
+		setValeur(i, getValeur(i)+1);
+		reste--;
+	}
+
+
+	delete(histo);
 }
 
 
