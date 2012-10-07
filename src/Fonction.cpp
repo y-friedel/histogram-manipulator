@@ -99,7 +99,6 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 		{
 			valeurs[i] = j;	
 			i++;
-			std::cout<<j<<std::endl;
 		}		
 		j++;		
 	}
