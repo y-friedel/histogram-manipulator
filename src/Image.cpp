@@ -6,6 +6,8 @@
 Image::Image()
 {
 	valeurs = std::vector<int>();
+    largeur = 0;
+    hauteur = 0;
 }
 
 Image::Image(const Image& im)

@@ -46,6 +46,14 @@ int main(int argc, char** argv)
 	fonction.specification(im, image1, newHisto);
 	image1.saveAscii("./data/specification.pgm");
 
+	fonction.negatif(im, image1);
+	im.saveAscii("./data/t1a.pgm");
+	image1.saveAscii("./data/t1b.pgm");
+		fonction.negatif(im, image1);
+	im.saveAscii("./data/t2a.pgm");
+	image1.saveAscii("./data/t2b.pgm");
+
+
 	Histogramme histo1 = Histogramme(image1);
 	histo1.exporter_TXT("./data/Hspecification.txt");
 	
