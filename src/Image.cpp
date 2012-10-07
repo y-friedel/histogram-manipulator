@@ -25,6 +25,17 @@ Image::Image(const std::string& fichier)
 	
 }
 
+Image::Image(const std::vector<int> _valeurs, bool _format, int _largeur, int _hauteur, int _valeur_max)
+{
+	
+	format = _format;
+	largeur = _largeur;
+	hauteur = _hauteur;	
+	valeur_max = _valeur_max;
+	valeurs.resize(largeur*hauteur);
+	copy(_valeurs.begin(), _valeurs.end(), valeurs.begin());
+}
+
 Image::~Image()
 {
 
@@ -62,9 +73,30 @@ void Image::setPixel(int v, int valeur)
 	valeurs[v] = valeur;
 }
 
+bool Image::getFormat() const
+{
+	return format;
+}
+
+void Image::setFormat(bool _format)
+{
+	format = _format;
+}
+
 int Image::getValeurMax() const
 {
 	return valeur_max;
+}
+
+void Image::setValeurMax(int _valeur_max)
+{
+	valeur_max = _valeur_max;
+}
+
+void Image::setLargeur(int _largeur)
+{
+	largeur = _largeur;
+	valeurs.resize(hauteur*largeur);
 }
 
 int Image::getLargeur() const
@@ -77,6 +109,11 @@ int Image::getHauteur() const
 	return hauteur;
 }
 
+void Image::setHauteur(int _hauteur)
+{
+	hauteur = _hauteur;
+	valeurs.resize(hauteur*largeur);
+}
 
 
 

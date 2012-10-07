@@ -37,15 +37,12 @@ int main(int argc, char** argv)
 	//newHisto.setNombrePixels(50000);	 
 	newHisto.save("Histogramme2");
     
-	
-
-
 	Fonction fonction = Fonction(255);
 	
 	
-	Image image = Image("./data/rs2.pgm");
-	Image image1 = Image(image);
+	Image image = Image("./data/rs.pgm");
 	
+	Image image1 = Image(image);
 	fonction.specification(im, image1, newHisto);
 	image1.saveAscii("./data/specification.pgm");
 
@@ -65,11 +62,10 @@ int main(int argc, char** argv)
 	Histogramme histo3 = Histogramme(image2);
 	histo3.exporter_TXT("./data/Hrecadrage.txt");
 	
-	
 	Traitement traitement = Traitement();
+	traitement.diffusionErreur(image, image1);
+	image1.saveAscii("./data/versionGlissante.pgm");
 	
-	image = traitement.filtreMedian(image1);
-	image.saveAscii("./data/median.pgm");
 	
 	return 0;
 }

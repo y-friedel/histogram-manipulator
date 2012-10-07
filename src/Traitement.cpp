@@ -1,5 +1,5 @@
 #include "Traitement.hpp"
-
+#include <iostream>
 
 	Traitement::Traitement()
 	{
@@ -10,104 +10,107 @@
 	{
 	    
 	}
-
-
-
-
-Image& Traitement::filtreMedian(Image& im)
+	
+/* Cette procédure s'occupe du filtre médian
+ * Paramètres :
+ * 	Image de départ (qu'on ne change pas)
+ * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et de la fonction)
+ * 
+ * 	Donc pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Traitement::filtreMedian(const Image& depart, Image& arrivee)
 {
-	Image image = Image(im);
-	std::vector<int> nouvelles_valeurs = std::vector<int>();
+	arrivee = Image(depart);
+
 	int median;
 	
 	//création du tableau
 	std::vector<int> tableau = std::vector<int>();
   
-	for(int i=0; i< im.getLargeur()*im.getHauteur(); i++)
+	for(int i=0; i< depart.getLargeur()*depart.getHauteur(); i++)
 	{
 		tableau.clear();
 		
-		tableau.push_back(im.getPixel(i));
+		tableau.push_back(depart.getPixel(i));
 		
 		//1. on remplit du tableau
 		//début de ligne
-		if (i%im.getLargeur()==0)
+		if (i%depart.getLargeur()==0)
 		{
-			tableau.push_back(im.getPixel(i+1));
+			tableau.push_back(depart.getPixel(i+1));
 			//debut de colonne
-			if (i<im.getLargeur())
+			if (i<depart.getLargeur())
 			{
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()+1));	
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()+1));	
 			}
 			//fin de colonne
-			else if (i>=im.getLargeur()*(im.getHauteur()-1))
+			else if (i>=depart.getLargeur()*(depart.getHauteur()-1))
 			{
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()+1));
 			}else
 			{
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()+1));
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()+1));
 			}
 		
 			
 			
-		}else if (i%im.getLargeur()==im.getLargeur()-1) //fin de ligne
+		}else if (i%depart.getLargeur()==depart.getLargeur()-1) //fin de ligne
 		{
-			tableau.push_back(im.getPixel(i-1));
+			tableau.push_back(depart.getPixel(i-1));
 			//debut de colonne
-			if (i<im.getLargeur())
+			if (i<depart.getLargeur())
 			{
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()-1));
 			} 
 			//fin de colonne
-			else if (i>im.getLargeur()*(im.getHauteur()-1))
+			else if (i>depart.getLargeur()*(depart.getHauteur()-1))
 			{
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()-1));
 			}else
 			{
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()-1));
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()-1));
 			
 			}
 		}else
 		{	
 		  
-			tableau.push_back(im.getPixel(i-1));
-			tableau.push_back(im.getPixel(i+1));
+			tableau.push_back(depart.getPixel(i-1));
+			tableau.push_back(depart.getPixel(i+1));
 			
 			//debut de colonne
-			if (i<im.getLargeur())
+			if (i<depart.getLargeur())
 			{
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()+1));
-				tableau.push_back(im.getPixel(i+im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()-1));
 			}
 			//fin de colonne
-			else if (i>im.getLargeur()*(im.getHauteur()-1))
+			else if (i>depart.getLargeur()*(depart.getHauteur()-1))
 			{
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()+1));
-				tableau.push_back(im.getPixel(i-im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()-1));
 			}else
 			{	
-				tableau.push_back(im.getPixel(i-im.getLargeur()));
-				tableau.push_back(im.getPixel(i-im.getLargeur()+1));
-				tableau.push_back(im.getPixel(i-im.getLargeur()-1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i-depart.getLargeur()-1));
 				
-				tableau.push_back(im.getPixel(i+im.getLargeur()));
-				tableau.push_back(im.getPixel(i+im.getLargeur()+1));
-				tableau.push_back(im.getPixel(i+im.getLargeur()-1));	
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()+1));
+				tableau.push_back(depart.getPixel(i+depart.getLargeur()-1));	
 			}
 		}
-		
 		
 		//2. on trie le tableau		
 		int temp;
@@ -132,14 +135,131 @@ Image& Traitement::filtreMedian(Image& im)
 		}
 		while(echange);
 		
+		
 		//3. on prend le median
 		median = tableau[tableau.size()/2];
 		
 		//4. on remplace l'intensité du pixel par le median
-		//nouvelles_valeurs.push_back(median);
-		image.setPixel(i, median);
+		arrivee.setPixel(i, median);
+		
+	}
+
+}
+
+/* Cette procédure s'occupe de la diffusion d'erreur
+ * Paramètres :
+ * 	Image de départ (qu'on ne change pas)
+ * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et de la fonction)
+ * 
+ * 	Donc pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Traitement::diffusionErreur(const Image& depart, Image& arrivee)
+{
+	arrivee = Image(depart);
+	
+	int moyenne = depart.getValeurMax()/2;
+  
+	for(int i=0; i< depart.getLargeur()*depart.getHauteur(); i++)
+	{
+		if(depart.getPixel(i)<=moyenne)
+			arrivee.setPixel(i,0);
+		else
+			arrivee.setPixel(i,depart.getValeurMax());
+	  
+	}
+
+}
+
+/* Cette procédure s'occupe de la diffusion d'erreur par matrice
+ * Paramètres :
+ * 	Image de départ (qu'on ne change pas)
+ * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et de la fonction)
+ * 	Matrice dont on va se servir pour la diffusion d'erreur
+ * 
+ * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice)
+{
+	arrivee = Image(depart);
+	
+	//On applique diffusion d'erreur sur depart
+	//arrivee devient l'image avec les erreurs diffusées
+	diffusionErreur(depart, arrivee);
+	
+	int erreur;
+	int indice;
+	
+	for(int j=0; j<= depart.getHauteur(); j++)
+	{
+		for(int i=0; i< depart.getLargeur(); i++)
+		{
+			indice = depart.getLargeur()*j+i;
+			erreur = depart.getPixel(indice)*arrivee.getPixel(indice);
+			
+			   //A remplir
+		}		
+	}	
+}
+
+/* Cette procédure s'occupe de la version glissante de la specification d'histogramme
+ * Paramètres :
+ * 	Image de départ (qu'on ne change pas)
+ * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et de la fonction)
+ * 	Histogramme cible dont on va se servir pour la specification
+ * 	X_min et X_max déterminent l'intervalle x de la fenetre
+ * 	Y_min et Y_max déterminent l'intervalle y de la fenetre
+ * 
+ * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme cible, int X_min, int X_max, int Y_min, int Y_max)
+{
+	arrivee = Image(depart);
+	
+	//On créé une nouvelle image à la taille de la fenetre
+	int largeur = X_max-X_min+1;
+	int hauteur =Y_max-Y_min+1;
+	
+	std::vector<int> valeurs = std::vector<int>();
+	//valeurs.resize(largeur*hauteur);
+	
+	for(int j=Y_min; j<=Y_max; j++)
+	{
+		for(int i=X_min; i<=X_max; i++)
+		{
+			valeurs.push_back(depart.getPixel(depart.getLargeur()*j+i));
+		}
 	}
 	
-	//Image* image = new(
-	return image;
+	Image fenetre = Image(valeurs, depart.getFormat(), largeur, hauteur, depart.getValeurMax());
+	fenetre.saveAscii("./data/fenetre.pgm");
+	
+	//on appelle specification sur notre fenetre
+	Fonction fonction = Fonction(fenetre.getValeurMax());
+	fonction.specification(fenetre, fenetre, cible);
+	fenetre.saveAscii("./data/specification.pgm");
+	
+	//On remplace les pixels dans notre nouvelle image
+	int compteur_fenetre = 0;
+	
+	for(int j=0; j<= Y_max; j++)
+	{
+		for(int i=0; i< depart.getLargeur(); i++)
+		{
+			if((j<=Y_max)&&(j>=Y_min))
+			{  
+				if((i<=X_max)&&(i>=X_min))
+				{
+					arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel(compteur_fenetre));
+					compteur_fenetre++;
+				}
+			}
+			else	
+				arrivee.setPixel(depart.getLargeur()*j+i, depart.getPixel(depart.getLargeur()*j+i));
+		}	  
+	}
 }
+
+
+
+
+
