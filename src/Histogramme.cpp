@@ -64,10 +64,10 @@ void Histogramme::setNombrePixels(int nombrePixels)
 		setValeur(i, getValeur(i)/histo.getValeur(valeur_max));
 
 		val_cumul += getValeur(i);
-
 	}
 	reste = nombrePixels-val_cumul;
-		
+	
+std::cout<<nombrePixels<<std::endl;
 	for(int i=0; reste>0; i++)
 	{
 		setValeur(i, getValeur(i)+1);

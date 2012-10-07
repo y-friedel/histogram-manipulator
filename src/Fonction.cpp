@@ -70,32 +70,37 @@ void Fonction::recadrage(const Image& depart, Image &arrivee)
 
 
 void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& cible)
-{
-	
-
-	//On calcul l'histogramme cumulé de l'histogramme de depart
+{ 
+	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
-	cumulDepart.cumul(cumulDepart);	
-
+	cumulDepart.exporter_TXT("cumuldepart.txt");
+	
+	//On calcul l'histogramme cumulé de l'histogramme de depart	
+	cumulDepart.cumul(cumulDepart);
+	
+	
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
 	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
+	cible.exporter_TXT("cible.txt");
+  
+	
 	
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	Histogramme cumulCible;
-	cible.cumul(cumulCible);			
+	cible.cumul(cumulCible);
 	
 	//On applique l'algorithme vu dans le cours
 	int i=0;
 	int j=0;
 
-	while ((i!=valeur_max)&&(j<=valeur_max))
+	while ((i!=valeur_max)&&(j!=valeur_max+1))
 	{
-		while ( cumulCible.getValeur(j) >= cumulDepart.getValeur(i))
+		while ( cumulCible.getValeur(j) > cumulDepart.getValeur(i))
 		{
 			valeurs[i] = j;	
 			i++;
-		}
-		
+			std::cout<<j<<std::endl;
+		}		
 		j++;		
 	}
 

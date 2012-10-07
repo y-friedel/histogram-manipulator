@@ -15,8 +15,6 @@ public :
 	Fonction(int max);
 
 	~Fonction();
-
-	//Histogramme* aPriori();
 	
 	int getValeur(int intensite);
 	void correspondance(const Image& depart, Image& arrivee);
