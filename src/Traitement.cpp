@@ -211,7 +211,7 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme cible, int X_min, int X_max, int Y_min, int Y_max)
+void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max)
 {
 	arrivee = Image(depart);
 	
@@ -243,7 +243,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	
 	for(int j=0; j<= Y_max; j++)
 	{
-		for(int i=0; i< depart.getLargeur(); i++)
+		for(int i=0; i< X_max; i++)
 		{
 			if((j<=Y_max)&&(j>=Y_min))
 			{  
@@ -256,6 +256,68 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 			else	
 				arrivee.setPixel(depart.getLargeur()*j+i, depart.getPixel(depart.getLargeur()*j+i));
 		}	  
+	}
+}
+
+
+void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int pixel_Cote)
+{
+	arrivee = Image(depart);
+
+	for(int j=0; j<= depart.getHauteur(); j++)
+	{
+		for(int i=0; i< depart.getLargeur(); i++)
+		{
+		//début de ligne
+			if (i==0)
+			{
+				//debut de colonne
+				if (j==0)
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, 0, pixel_Cote);	
+				}
+				//fin de colonne
+				else if (j==depart.getHauteur())
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j);
+				}else
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j+pixel_Cote);
+				}
+		
+
+			}else if (i==depart.getLargeur()) //fin de ligne
+			{
+				//debut de colonne
+				if (j==0)
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
+				}
+				//fin de colonne
+				else if (j==depart.getHauteur())
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j);
+				}else
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j+pixel_Cote);
+				}
+			}else
+			{		
+				//debut de colonne
+				if (j==0)
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
+				}
+				//fin de colonne
+				else if (j==depart.getHauteur())
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j);
+				}else
+				{
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j+pixel_Cote);
+				}
+			}
+		}
 	}
 }
 
