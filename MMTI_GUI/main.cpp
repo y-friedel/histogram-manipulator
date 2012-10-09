@@ -11,7 +11,7 @@
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-	bool graphic = 0;
+	bool graphic = 1;
 	if(graphic)
 	{
 	
