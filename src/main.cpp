@@ -40,10 +40,10 @@ int main(int argc, char** argv)
 	Fonction fonction = Fonction(255);
 	
 	
-	Image image = Image("./data/rs.pgm");
-	
+	Image image = Image("./data/rs2.pgm");
 	Image image1 = Image(image);
-	fonction.specification(im, image1, newHisto);
+	
+	/*fonction.specification(im, image1, newHisto);
 	image1.saveAscii("./data/specification.pgm");
 
 	fonction.negatif(im, image1);
@@ -68,12 +68,15 @@ int main(int argc, char** argv)
 	image2.saveAscii("./data/recadrage.pgm");
 	
 	Histogramme histo3 = Histogramme(image2);
-	histo3.exporter_TXT("./data/Hrecadrage.txt");
+	histo3.exporter_TXT("./data/Hrecadrage.txt");*/
 	
 	Traitement traitement = Traitement();
-	traitement.diffusionErreur(image, image1);
+//	traitement.versionGlissante(image, image1, newHisto, 2);
+traitement.specificationDansFenetre(image, image1, newHisto, 0, 3, 0, 3);
+
 	image1.saveAscii("./data/versionGlissante.pgm");
 	
+
 	
 	return 0;
 }

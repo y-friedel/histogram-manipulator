@@ -231,40 +231,38 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	}
 	
 	Image fenetre = Image(valeurs, depart.getFormat(), largeur, hauteur, depart.getValeurMax());
-	fenetre.saveAscii("./data/fenetre.pgm");
+	//fenetre.saveAscii("./data/fenetre.pgm");
+	fenetre.afficher();
 	
 	//on appelle specification sur notre fenetre
 	Fonction fonction = Fonction(fenetre.getValeurMax());
+std::cout<<"LA"<<std::endl;
 	fonction.specification(fenetre, fenetre, cible);
-	fenetre.saveAscii("./data/specification.pgm");
+std::cout<<"LA2"<<std::endl;
+	//fenetre.saveAscii("./data/specification.pgm");
 	
 	//On remplace les pixels dans notre nouvelle image
 	int compteur_fenetre = 0;
 	
-	for(int j=0; j<= Y_max; j++)
+	for(int j=Y_min; j<= Y_max; j++)
 	{
-		for(int i=0; i< X_max; i++)
-		{
-			if((j<=Y_max)&&(j>=Y_min))
-			{  
-				if((i<=X_max)&&(i>=X_min))
-				{
-					arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel(compteur_fenetre));
-					compteur_fenetre++;
-				}
-			}
-			else	
-				arrivee.setPixel(depart.getLargeur()*j+i, depart.getPixel(depart.getLargeur()*j+i));
+
+		for(int i=X_min; i< X_max; i++)
+		{ 
+			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel(compteur_fenetre));
+			compteur_fenetre++;
 		}	  
+
 	}
+
 }
 
 
-void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int pixel_Cote)
+void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int pixel_Cote)
 {
 	arrivee = Image(depart);
 
-	for(int j=0; j<= depart.getHauteur(); j++)
+	for(int j=0; j< depart.getHauteur(); j++)
 	{
 		for(int i=0; i< depart.getLargeur(); i++)
 		{
@@ -274,14 +272,17 @@ void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, i
 				//debut de colonne
 				if (j==0)
 				{
-					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, 0, pixel_Cote);	
+std::cout<<"1"<<std::endl;
+					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, 0, pixel_Cote);				
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
+std::cout<<"2"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j);
 				}else
 				{
+std::cout<<"3"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j+pixel_Cote);
 				}
 		
@@ -291,14 +292,17 @@ void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, i
 				//debut de colonne
 				if (j==0)
 				{
+std::cout<<"4"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
+std::cout<<"5"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j);
 				}else
 				{
+std::cout<<"6"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j+pixel_Cote);
 				}
 			}else
@@ -306,14 +310,17 @@ void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, i
 				//debut de colonne
 				if (j==0)
 				{
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
+std::cout<<"7"<<std::endl;
+					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, 0, pixel_Cote);	
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
+std::cout<<"8"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j);
 				}else
 				{
+std::cout<<"9"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j+pixel_Cote);
 				}
 			}
