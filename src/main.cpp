@@ -71,8 +71,8 @@ int main(int argc, char** argv)
 	histo3.exporter_TXT("./data/Hrecadrage.txt");*/
 	
 	Traitement traitement = Traitement();
-//	traitement.versionGlissante(image, image1, newHisto, 2);
-traitement.specificationDansFenetre(image, image1, newHisto, 0, 3, 0, 3);
+	traitement.versionGlissante(image, image1, newHisto, 1);
+//traitement.specificationDansFenetre(image, image1, newHisto, 0, 2, 0, 2);
 
 	image1.saveAscii("./data/versionGlissante.pgm");
 	

@@ -220,13 +220,13 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	int hauteur =Y_max-Y_min+1;
 	
 	std::vector<int> valeurs = std::vector<int>();
-	//valeurs.resize(largeur*hauteur);
+	valeurs.resize(largeur*hauteur);
 	
 	for(int j=Y_min; j<=Y_max; j++)
 	{
 		for(int i=X_min; i<=X_max; i++)
 		{
-			valeurs.push_back(depart.getPixel(depart.getLargeur()*j+i));
+			valeurs[j*largeur+i] = arrivee.getPixel(depart.getLargeur()*j+i);
 		}
 	}
 	
@@ -244,7 +244,7 @@ std::cout<<"LA2"<<std::endl;
 	//On remplace les pixels dans notre nouvelle image
 	int compteur_fenetre = 0;
 	
-	for(int j=Y_min; j<= Y_max; j++)
+	for(int j=Y_min; j< Y_max; j++)
 	{
 
 		for(int i=X_min; i< X_max; i++)
