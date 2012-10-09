@@ -197,6 +197,12 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 			erreur = depart.getPixel(indice)*arrivee.getPixel(indice);
 			
 			   //A remplir
+			
+			/*pixel(x+1][y) := pixel[x+1][y] + 7/16 * quant_error
+			 * pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
+			 *pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
+			 *pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
+			 */
 		}		
 	}	
 }
@@ -219,6 +225,8 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	int largeur = X_max-X_min+1;
 	int hauteur =Y_max-Y_min+1;
 	
+	int largeur_Depart = depart.getLargeur();
+	
 	std::vector<int> valeurs = std::vector<int>();
 	valeurs.resize(largeur*hauteur);
 	
@@ -226,35 +234,38 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	{
 		for(int i=X_min; i<=X_max; i++)
 		{
-			valeurs[j*largeur+i] = arrivee.getPixel(depart.getLargeur()*j+i);
+			valeurs[j*largeur+i] = depart.getPixel(largeur_Depart*j+i);
+			//std::cout<<valeurs[j*largeur+i]<<std::endl;
 		}
 	}
 	
 	Image fenetre = Image(valeurs, depart.getFormat(), largeur, hauteur, depart.getValeurMax());
 	//fenetre.saveAscii("./data/fenetre.pgm");
 	fenetre.afficher();
+	 
+	for(int i=0; i<valeurs.size(); i++)
+		std::cout<<"Gnah "<<valeurs[i]<<std::endl;
 	
 	//on appelle specification sur notre fenetre
 	Fonction fonction = Fonction(fenetre.getValeurMax());
-std::cout<<"LA"<<std::endl;
+std::cout<<"ETAPE : 1"<<std::endl;
 	fonction.specification(fenetre, fenetre, cible);
-std::cout<<"LA2"<<std::endl;
-	//fenetre.saveAscii("./data/specification.pgm");
-	
+	std::cout<<"ETAPE : 2"<<std::endl;
 	//On remplace les pixels dans notre nouvelle image
 	int compteur_fenetre = 0;
 	
-	for(int j=Y_min; j< Y_max; j++)
+	for(int j=Y_min; j<=Y_max; j++)
 	{
 
-		for(int i=X_min; i< X_max; i++)
+		for(int i=X_min; i<=X_max; i++)
 		{ 
 			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel(compteur_fenetre));
 			compteur_fenetre++;
+			std::cout<<compteur_fenetre<<std::endl;
 		}	  
 
 	}
-
+std::cout<<"ETAPE PASSEE"<<std::endl;
 }
 
 
@@ -272,17 +283,17 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 				//debut de colonne
 				if (j==0)
 				{
-std::cout<<"1"<<std::endl;
+std::cout<<"ETAPE : 1"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, 0, pixel_Cote);				
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
-std::cout<<"2"<<std::endl;
+std::cout<<"ETAPE : 2"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j);
 				}else
 				{
-std::cout<<"3"<<std::endl;
+std::cout<<"ETAPE : 3"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j+pixel_Cote);
 				}
 		
@@ -292,17 +303,17 @@ std::cout<<"3"<<std::endl;
 				//debut de colonne
 				if (j==0)
 				{
-std::cout<<"4"<<std::endl;
+std::cout<<"ETAPE : 4"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
-std::cout<<"5"<<std::endl;
+std::cout<<"ETAPE : 5"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j);
 				}else
 				{
-std::cout<<"6"<<std::endl;
+std::cout<<"ETAPE : 6"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j+pixel_Cote);
 				}
 			}else
@@ -310,17 +321,17 @@ std::cout<<"6"<<std::endl;
 				//debut de colonne
 				if (j==0)
 				{
-std::cout<<"7"<<std::endl;
+std::cout<<"ETAPE : 7"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, 0, pixel_Cote);	
 				}
 				//fin de colonne
 				else if (j==depart.getHauteur())
 				{
-std::cout<<"8"<<std::endl;
+std::cout<<"ETAPE : 8"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j);
 				}else
 				{
-std::cout<<"9"<<std::endl;
+std::cout<<"ETAPE : 9"<<std::endl;
 					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j+pixel_Cote);
 				}
 			}

@@ -39,6 +39,7 @@ void Fonction::correspondance(const Image& depart, Image& arrivee)
 	{     
 	     arrivee.setPixel(i, valeurs[arrivee.getPixel(i)]);
 	}  
+	std::cout<<"ETAPE : correspondance"<<std::endl;
 }
 
 
@@ -69,7 +70,7 @@ void Fonction::negatif(const Image& depart, Image &arrivee)
 void Fonction::recadrage(const Image& depart, Image &arrivee)
 {
 	Histogramme histo = Histogramme(depart);
-  
+	
 	int intensiteMax = histo.getIntensiteMax();
 	int intensiteMin = histo.getIntensiteMin();
 
@@ -105,28 +106,28 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
 	cumulDepart.exporter_TXT("cumuldepart.txt");
-	
+	std::cout<<"ETAPE : spec 1"<<std::endl;
 	//On calcul l'histogramme cumulé de l'histogramme de depart	
-	cumulDepart.cumul(cumulDepart);
-	
-	
+	cumulDepart.cumul();
+	std::cout<<"ETAPE : spec 2"<<std::endl;
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
 	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
-	cible.exporter_TXT("cible.txt");
-  
-	
-	
+
+	std::cout<<"ETAPE : spec 2.1"<<std::endl;
+	//cible.exporter_TXT("cible.txt");
+  std::cout<<"ETAPE : spec 3"<<std::endl;
 	//On calcul l'histogramme cumulé de l'histogramme cible
-	Histogramme cumulCible;
-	cible.cumul(cumulCible);
-	
+	//Histogramme cumulCible = Histogramme(cible);
+	std::cout<<"ETAPE : spec 4"<<std::endl;
+	cible.cumul();
+	std::cout<<"ETAPE : spec 5"<<std::endl;
 	//On applique l'algorithme vu dans le cours
 	int i=0;
 	int j=0;
 
 	while ((i!=valeur_max)&&(j!=valeur_max+1))
 	{
-		while ( cumulCible.getValeur(j) > cumulDepart.getValeur(i))
+		while ( cible.getValeur(j) > cumulDepart.getValeur(i))
 		{
 			valeurs[i] = j;	
 			i++;
@@ -154,8 +155,8 @@ void Fonction::egalisation(const Image& depart, Image &arrivee)
 	Histogramme histo = Histogramme(depart);
 
 	//On fait le cumul de l'histogramme de l'image
-	Histogramme histoCumul;
-	histo.cumul(histoCumul);
+	Histogramme histoCumul = Histogramme(histo);
+	histoCumul.cumul();
 	
 	//le nombre de pixel peut être trouvé grace au cumul d'histogramme (la valeur de fin)
 	int nb_Pixels = histoCumul.getValeur(valeur_max);

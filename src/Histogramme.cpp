@@ -53,26 +53,40 @@ Histogramme::Histogramme(std::vector<int> _valeurs)
 
 void Histogramme::setNombrePixels(int nombrePixels)
 {
-	Histogramme histo = Histogramme();
-	cumul(histo);
+	int cumul=0;
 	int val_cumul=0;
 	int reste;
-
+	std::cout<<"ETAPE : setNombrePixels 1"<<std::endl;
 	for(int i=0; i<=valeur_max; i++)
 	{
-		setValeur(i, nombrePixels*getValeur(i));
-		setValeur(i, getValeur(i)/histo.getValeur(valeur_max));
-
-		val_cumul += getValeur(i);
+		cumul += getValeur(i);
 	}
-	reste = nombrePixels-val_cumul;
 	
-	for(int i=0; reste>0; i++)
+	if(cumul<valeur_max)
 	{
-		setValeur(i, getValeur(i)+1);
-		reste--;
+		for(int i=0; i<=cumul; i++)
+		{
+			setValeur(i, 1);
+		}	  
 	}
+	else
+	{
+		for(int i=0; i<=valeur_max; i++)
+		{
+			setValeur(i, nombrePixels*getValeur(i));
+			setValeur(i, getValeur(i)/cumul);
 
+			val_cumul += getValeur(i);
+		}
+		reste = nombrePixels-val_cumul;
+	std::cout<<"ETAPE : setNombrePixels 2"<<std::endl;	
+		for(int i=0; reste>0; i++)
+		{
+			setValeur(i, getValeur(i)+1);
+			reste--;
+		}
+	}
+	std::cout<<"ETAPE : setNombrePixels 3"<<std::endl;
 }
 
 
@@ -260,22 +274,15 @@ int Histogramme::getIntensiteMax() const
 
 
 
-void Histogramme::cumul(Histogramme& histoCumul)
+void Histogramme::cumul()
 {	
-	std::vector<int> _valeurs = std::vector<int>();
-
+	int cumul =0;
 
 	for(int i=0; i<=valeur_max; i++)
 	{
-		_valeurs.push_back(valeurs[i]);
+		cumul += getValeur(i);
+		setValeur(i, cumul);
 	}
-
-	for(int i=1; i<=valeur_max; i++)
-	{
-		_valeurs[i] = _valeurs[i-1]+ _valeurs[i];
-	}
-
-	histoCumul = Histogramme(_valeurs);
 }
 
 

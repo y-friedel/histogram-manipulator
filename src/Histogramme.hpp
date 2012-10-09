@@ -27,7 +27,7 @@ private :
 
 	void setNombrePixels(int nombrePixels);	
 
-	void cumul(Histogramme& histoCumul);
+	void cumul();
 
 	void exporter_PGM(const std::string& fichier);
 	void exporter_TXT(const std::string& fichier);

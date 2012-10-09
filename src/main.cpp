@@ -71,10 +71,11 @@ int main(int argc, char** argv)
 	histo3.exporter_TXT("./data/Hrecadrage.txt");*/
 	
 	Traitement traitement = Traitement();
-	traitement.versionGlissante(image, image1, newHisto, 1);
-//traitement.specificationDansFenetre(image, image1, newHisto, 0, 2, 0, 2);
+	//traitement.versionGlissante(image, image1, newHisto, 1);
+traitement.specificationDansFenetre(image, image1, newHisto, 2, 5, 0, 1);
 
-	image1.saveAscii("./data/versionGlissante.pgm");
+std::cout<<"ET LA ?"<<std::endl;
+	//image1.saveAscii("./data/versionGlissante.pgm");
 	
 
 	
