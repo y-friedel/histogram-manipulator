@@ -26,7 +26,7 @@ public :
 	void specification(const Image& depart, Image &arrivee, Histogramme& cible);
 	void egalisation(const Image& depart, Image &arrivee);	
 	
-	//void k_moyennes(const Image& depart, Image &arrivee, const std::vector<int> clusters);
+	
 		
 	void afficher();
 
