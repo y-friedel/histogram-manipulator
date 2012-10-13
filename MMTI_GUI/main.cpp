@@ -70,7 +70,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/rs4.pgm");
+		Image image = Image("./data/rs.pgm");
 		Image image1 = Image(image);
 
 		/*fonction.negatif(im, image1);

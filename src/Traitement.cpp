@@ -241,7 +241,7 @@ void Traitement::diffusionErreur(const Image& depart, Image& arrivee)
 			arrivee.setPixel(i,depart.getValeurMax());
 	  
 	}
-
+arrivee.saveAscii("./data/diffusionErreur.pgm");
 }
 
 /* Cette procédure s'occupe de la diffusion d'erreur par matrice
@@ -295,7 +295,7 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 			{
 				for(int l=0; l<nb_pixels_cote; l++)
 				{
-					nouvelle_valeur = erreurdiffusee.getPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote).getLargeur()*(k+j+1)+(l+i-nb_pixels_cote));
+					nouvelle_valeur = erreurdiffusee.getPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote));
 					nouvelle_valeur =  nouvelle_valeur + matrice.getValeurGauche(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
 					arrivee.setPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote), nouvelle_valeur);
 				}
