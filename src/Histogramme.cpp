@@ -9,6 +9,13 @@ Histogramme::Histogramme()
 	
 }
 
+Histogramme::Histogramme(int _valeur_max)
+{
+	valeur_max=_valeur_max;
+	valeurs.resize(_valeur_max);
+	
+}
+
 Histogramme::Histogramme(const Image& _img)
 {
 	valeur_max = _img.getValeurMax();
@@ -43,46 +50,68 @@ Histogramme::Histogramme(const Histogramme& histo)
 Histogramme::Histogramme(std::vector<int> _valeurs)
 {
 
-	for(std::vector<int>::iterator i = _valeurs.begin(); i != _valeurs.end(); i++) 
-	{
-		valeurs.push_back(*i);
-	}
-
+	valeurs = std::vector<int>();
+	valeurs.resize(_valeurs.size());
+	copy(_valeurs.begin(), _valeurs.end(), valeurs.begin());	
 	valeur_max = valeurs.size()-1;
 }
 
-void Histogramme::setNombrePixels(int nombrePixels)
+void Histogramme::setNombrePixels(int nombrePixels, int nb_intensite)
 {
-	int cumul=0;
-	int val_cumul=0;
+	int cumul;
+	int val_cumul = 0;
 	int reste;
+	exporter_TXT("./data/histo0.txt");
+	Histogramme histo = Histogramme(valeurs);
+	histo.exporter_TXT("./data/histo1.txt");
+	//std::vector<int> nouvelles_valeurs = std::vector<int>();
+	int frequence = valeur_max/nb_intensite;
+	valeurs.resize(nb_intensite);
+	
+	std::cout<<"FREQUENCE : "<<frequence<<" INTENSITE : "<< nb_intensite<<std::endl;
+	valeur_max = nb_intensite-1;
+	
+	for(int i=0; i<=nb_intensite-1; i++)
+	{
+		cumul = 0;
+		for(int j=i; j<frequence+i; j++)
+		      cumul += histo.getValeur(j);
+		valeurs[i] = cumul;
+		//std::cout<<cumul<<std::endl;
+	}
+for(int i=0; i<=valeur_max; i++)
+	
+	std::cout<<valeurs[i]<<" "<<valeur_max<<std::endl;
 
+
+	cumul = 0;
 	for(int i=0; i<=valeur_max; i++)
 	{
-		cumul += getValeur(i);
+		cumul += valeurs[i]; 
+		
 	}
-	
+	std::cout<<cumul<<std::endl;
 	if(cumul<valeur_max)
 	{
 		for(int i=0; i<=cumul; i++)
 		{
-			setValeur(i, 1);
+			valeurs[i] = 1;
 		}	  
 	}
 	else
 	{
 		for(int i=0; i<=valeur_max; i++)
 		{
-			setValeur(i, nombrePixels*getValeur(i));
-			setValeur(i, getValeur(i)/cumul);
+			setValeur(i, nombrePixels*valeurs[i]);
+			setValeur(i, valeurs[i]/cumul);
 
-			val_cumul += getValeur(i);
+			val_cumul += valeurs[i];
 		}
 		reste = nombrePixels-val_cumul;
 
 		for(int i=0; reste>0; i++)
 		{
-			setValeur(i, getValeur(i)+1);
+			setValeur(i, valeurs[i]+1);
 			reste--;
 		}
 	}
@@ -257,7 +286,7 @@ int Histogramme::getIntensiteMax() const
 {
 	int maximum = -1; 
 
-	for(int i=valeur_max; i>=0; i++)
+	for(int i=valeur_max; i>=0; i--)
 	{
 		if(valeurs[i]>0)
 		{
@@ -270,12 +299,42 @@ int Histogramme::getIntensiteMax() const
 }
 
 
+std::vector<int> Histogramme::retrecirHistogramme()
+{
+	std::vector<int> _valeurs = std::vector<int>();
+	std::vector<int> intensites = std::vector<int>();
 
+	for(int i=0; i<=valeur_max; i++)
+	{
+		if(valeurs[i] != 0)
+		{
+			_valeurs.push_back(valeurs[i]);
+			intensites.push_back(i);
+		}
+	}
+	
+	valeurs = _valeurs;
+	valeur_max = _valeurs.size()-1;
+	
+  exporter_TXT("./data/retrecirHistogramme.txt");
+	return intensites;
+}
+
+
+void Histogramme::agrandirHistogramme(std::vector<int> intensites, int nb_intensite)
+{	
+	std::vector<int> _valeurs = valeurs;
+	valeurs.resize(nb_intensite);	
+	valeur_max = nb_intensite;
+	
+	for(int i=0; i<intensites.size(); i++)
+		valeurs[intensites[i]] = _valeurs[i];
+}
 
 
 void Histogramme::cumul()
 {	
-	int cumul =0;
+	int cumul = 0;
 
 	for(int i=0; i<=valeur_max; i++)
 	{

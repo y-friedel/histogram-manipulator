@@ -91,6 +91,31 @@ void Fonction::recadrage(const Image& depart, Image &arrivee)
 	correspondance(depart, arrivee);
 }
 
+/* Cette procédure renvoie un recadrage de l'histogramme
+ * Paramètres :
+ * 	Histogramme de départ (qu'on ne change pas)
+ * 	Histogramme d'arrivée (à laquelle on va changer les attributs en fonction 
+ * 			de l'image de départ et de la fonction de correspondance)
+ * 
+ * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Fonction::etirement(const Histogramme& depart, Histogramme &arrivee)
+{
+	arrivee = Histogramme(depart.getValeurMax());
+	valeurs.resize(depart.getValeurMax());
+	
+	double taille_depart = depart.getIntensiteMax()- depart.getIntensiteMin();
+	double taille_fin = depart.getValeurMax();
+	double frequence = 0;
+	
+	for(int i=0; i<taille_depart; i++)
+	{
+		arrivee.setValeur((int)frequence, depart.getValeur(i));
+		frequence += taille_fin/taille_depart;
+		valeurs[(int)frequence] = depart.getValeur(i);
+	}
+}
+
 /* Cette procédure renvoie une amélioration de l'image de départ par spécification d'histogramme
  * Paramètres :
  * 	Image de départ (qu'on ne change pas)
@@ -100,35 +125,41 @@ void Fonction::recadrage(const Image& depart, Image &arrivee)
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& cible)
+void Fonction::specification(const Histogramme& depart, Histogramme& cible)
 { 
+	Histogramme temp = Histogramme(cible);
+  
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
+
 	//On calcul l'histogramme cumulé de l'histogramme de depart	
 	cumulDepart.cumul();
+	cumulDepart.exporter_TXT("./data/cumulDepart.txt");
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
-	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
+	temp.setNombrePixels(cumulDepart.getValeur(valeur_max), cumulDepart.getValeurMax());
+	temp.exporter_TXT("./data/cumulDepartcible.txt");
+	
+	/*if(cumulDepart.getValeur(valeur_max)<255)
+	{  
+	  cible.exporter_TXT("./data/temp.txt");
+	etirement(cible, temp);
+	temp.exporter_TXT("./data/cible.txt");}*/
 
-	//cible.exporter_TXT("cible.txt");
 	//On calcul l'histogramme cumulé de l'histogramme cible
-	//Histogramme cumulCible = Histogramme(cible);
-	cible.cumul();
+	temp.cumul();
 	//On applique l'algorithme vu dans le cours
 	int i=0;
 	int j=0;
 
 	while ((i!=valeur_max)&&(j!=valeur_max+1))
 	{
-		while ( cible.getValeur(j) > cumulDepart.getValeur(i))
+		while ( temp.getValeur(j) > cumulDepart.getValeur(i))
 		{
 			valeurs[i] = j;	
 			i++;
 		}		
 		j++;		
 	}
-
-	//On appelle la fonction de correspondance
-	correspondance(depart, arrivee);
 }
 
 

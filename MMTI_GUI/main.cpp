@@ -1,12 +1,13 @@
 #include <QtGui/QApplication>
 //#include "qmlapplicationviewer.h"
 
-#include "../src/Image.hpp"
-#include "../src/Histogramme.hpp"
-#include "../src/Fonction.hpp"
-#include "../src/Traitement.hpp"
-#include "../src/Point.hpp"
-#include "../src/NuagePoint.hpp"
+#include "Image.hpp"
+#include "Histogramme.hpp"
+#include "Fonction.hpp"
+#include "Traitement.hpp"
+#include "Point.hpp"
+#include "NuagePoint.hpp"
+#include "Matrice.hpp"
 #include <iostream>
 
 #include "MainWindow.h"
@@ -60,7 +61,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
 		//histogramme plat
 		for(int i=0; i<256;i++)	temp.push_back(1);
-		  
+	  
 		Histogramme newHisto = Histogramme(temp);    
 
 		//newHisto.setNombrePixels(50000);	 
@@ -69,11 +70,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/bruit.pgm");
+		Image image = Image("./data/rs2.pgm");
 		Image image1 = Image(image);
-		
-		fonction.specification(im, image1, newHisto);
-		image1.saveAscii("./data/specification.pgm");
 
 		/*fonction.negatif(im, image1);
 		im.saveAscii("./data/t1a.pgm");
@@ -92,6 +90,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Histogramme histo2 = Histogramme(image1);
 		histo2.exporter_TXT("./data/Hegalisation.txt");	
 		
+		
 	/*	Image image2;
 		fonction.recadrage(im, image2);
 		image2.saveAscii("./data/recadrage.pgm");
@@ -100,10 +99,49 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		histo3.exporter_TXT("./data/Hrecadrage.txt");*/
 		
 		Traitement traitement = Traitement();
-		
-		traitement.miroir(image, image1, 75);
+		/*traitement.miroir(image, image1, 2);
 		image1.saveAscii("./data/miroir.pgm");
 		
+		traitement.couper_image(image1, image, 2);
+		image.saveAscii("./data/couper_image.pgm");
+		*/
+		int t1 = clock();
+		//fonction.specification(image, image1, newHisto);
+		
+		std::vector<int> tableau_gauche = std::vector<int>();
+		tableau_gauche.push_back(2);
+		tableau_gauche.push_back(4);
+		tableau_gauche.push_back(1);
+		tableau_gauche.push_back(2);
+		
+		std::vector<int> tableau_droit = std::vector<int>();
+		tableau_droit.push_back(0);
+		tableau_droit.push_back(8);
+		tableau_droit.push_back(4);
+		tableau_droit.push_back(8);
+		tableau_droit.push_back(4);
+		tableau_droit.push_back(2);
+		tableau_droit.push_back(4);
+		tableau_droit.push_back(2);
+		tableau_droit.push_back(1);
+		
+		Matrice stucki = Matrice(tableau_gauche, tableau_droit, 2);
+		std::cout<<stucki.getNbPixelsCote()<<std::endl;
+		
+		traitement.diffusionErreurMatrice(image, image1, stucki);
+		
+		
+		
+	/*	traitement.versionGlissante(image, image1, newHisto, 3);
+		int t2 = clock();
+		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;
+		image1.saveAscii("./data/versionGlissante.pgm");
+		
+		Histogramme nepastoucher = Histogramme("./data/nepastoucher.txt");*/
+		
+		
+		/*newHisto.setNombrePixels(16, 8);
+		newHisto.exporter_TXT("./data/nepastoucher2.txt");	*/
 		//traitement.versionGlissante(image, image1, newHisto, 1);
 	//traitement.specificationDansFenetre(image, image1, newHisto, 2, 5, 0, 1);
 
@@ -111,7 +149,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		//image1.saveAscii("./data/versionGlissante.pgm");
 		
 		//NuagePoint nuage = NuagePoint(10000, 5000);
-		NuagePoint nuage = NuagePoint();
+	/*	NuagePoint nuage = NuagePoint();
 		nuage.ajoutPoint(Point(1,1));
 		nuage.ajoutPoint(Point(2,2));
 		nuage.ajoutPoint(Point(3,3));
@@ -149,7 +187,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		}
 		
 		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;
-	
+	*/
 	return 0;
 	}		
 

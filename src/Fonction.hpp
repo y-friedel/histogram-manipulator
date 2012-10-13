@@ -22,8 +22,9 @@ public :
 
 	void negatif(const Image& depart, Image &arrivee);
 	void recadrage(const Image& depart, Image &arrivee);
+	void etirement(const Histogramme& depart, Histogramme &arrivee);
 	
-	void specification(const Image& depart, Image &arrivee, Histogramme& cible);
+	void specification(const Histogramme& depart, Histogramme& cible);
 	void egalisation(const Image& depart, Image &arrivee);	
 	
 	
