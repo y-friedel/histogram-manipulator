@@ -12,6 +12,7 @@
 	    
 	}
 	
+	
 /* Cette procédure s'occupe du filtre médian
  * Paramètres :
  * 	Image de départ (qu'on ne change pas)
@@ -243,15 +244,15 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 	//arrivee devient l'image avec les erreurs diffusées
 	diffusionErreur(depart, arrivee);
 	
-	int erreur;
-	int indice;
+	//int erreur;
+	//int indice;
 	
 	for(int j=0; j<= depart.getHauteur(); j++)
 	{
 		for(int i=0; i< depart.getLargeur(); i++)
 		{
-			indice = depart.getLargeur()*j+i;
-			erreur = depart.getPixel(indice)*arrivee.getPixel(indice);
+			//indice = depart.getLargeur()*j+i;
+			//erreur = depart.getPixel(indice)*arrivee.getPixel(indice);
 			
 			   //A remplir
 			
@@ -284,8 +285,12 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	
 	int largeur_Depart = depart.getLargeur();
 	
-	std::vector<int> valeurs = std::vector<int>();
-	valeurs.resize(largeur*hauteur);
+	int taille = largeur*hauteur;
+	
+	std::cout << "LAUL" << largeur << " " << hauteur << " " << taille << std::endl;
+	
+	std::vector<int> valeurs = std::vector<int>(taille, 0);
+	//valeurs.resize(taille);
 	
 	for(int j=Y_min; j<=Y_max; j++)
 	{
@@ -300,7 +305,7 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	//fenetre.saveAscii("./data/fenetre.pgm");
 	fenetre.afficher();
 	 
-	for(int i=0; i<valeurs.size(); i++)
+	for(unsigned int i=0; i<valeurs.size(); i++)
 		std::cout<<"Gnah "<<valeurs[i]<<std::endl;
 	
 	//on appelle specification sur notre fenetre

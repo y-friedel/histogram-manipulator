@@ -55,7 +55,7 @@ int NuagePoint::getTaille() const
 	return nuage.size();
 }
 
-void NuagePoint::ajoutPoint(Point point)
+void NuagePoint::ajoutPoint(Point& point)
 {
 	nuage.push_back(point);
 }
@@ -67,7 +67,7 @@ void NuagePoint::suppressionPoint(int i, Point point)
 	
 void NuagePoint::afficher()
 {
-	for(int i=0; i<nuage.size(); i++)
+	for(unsigned int i=0; i<nuage.size(); i++)
 		nuage[i].afficher();
 }
 
@@ -122,11 +122,11 @@ std::vector<NuagePoint> NuagePoint::k_moyennes(int k, int t)
 	for(int nb_iteration=0; nb_iteration<t; nb_iteration++)
 	{
 	  std::cout<<nb_iteration<<std::endl;
-		for(int i=0; i<nuage.size(); i++)
+		for(unsigned int i=0; i<nuage.size(); i++)
 		{
 			est_centre = false;
 			
-			for(int j=0; j<centres.size(); j++)
+			for(unsigned int j=0; j<centres.size(); j++)
 			{
 				if(centres[j].egal(nuage[i]))
 				{
@@ -150,7 +150,7 @@ std::vector<NuagePoint> NuagePoint::k_moyennes(int k, int t)
 		}
 
 		//on affecte les points aux classes selon la distance
-		for(int i=0; i<nuage.size(); i++)
+		for(unsigned int i=0; i<nuage.size(); i++)
 		{
 			if(nuage[i].getMarque()==false)
 			{	//on calcule les distances

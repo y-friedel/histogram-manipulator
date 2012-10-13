@@ -23,7 +23,7 @@ private :
 	void setPoint(int i, Point p);
 	int getTaille() const;
 	
-	void ajoutPoint(Point point);
+	void ajoutPoint(Point& point);
 	void suppressionPoint(int i, Point point);
 	
 	void afficher();

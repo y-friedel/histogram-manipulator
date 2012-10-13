@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 
+
 Fonction::Fonction(int max)
 {
 	valeurs = std::vector<int>();
