@@ -36,6 +36,11 @@ int Matrice::getNbPixelsCote() const
 	return nb_pixels_cote;
 }
 
+int Matrice::getCompte() const
+{
+	return compte;
+}
+
 void Matrice::setValeurGauche(int i, int valeur)
 {
 	tableau_gauche[i] = valeur;

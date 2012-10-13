@@ -19,6 +19,7 @@ private :
 	
 	void setNbPixelsCote(int _nb_pixels_cote);
 	int getNbPixelsCote() const;
+	int getCompte() const;
 	void setValeurGauche(int i, int valeur);
 	int getValeurGauche(int i) const;
 	void setValeurDroit(int i, int valeur);

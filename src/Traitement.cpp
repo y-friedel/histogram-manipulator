@@ -255,22 +255,52 @@ void Traitement::diffusionErreur(const Image& depart, Image& arrivee)
 void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice)
 {
 	arrivee = Image(depart);
+	Image erreurdiffusee = Image(depart);
+	Traitement traitement = Traitement();
+	traitement.miroir(depart, arrivee, matrice.getNbPixelsCote());
+	//arrivee.miroir();
 	
 	//On applique diffusion d'erreur sur depart
 	//arrivee devient l'image avec les erreurs diffusées
-	diffusionErreur(depart, arrivee);
+	diffusionErreur(depart, erreurdiffusee);
 	
 	int erreur;
+	int nb_pixels_cote = matrice.getNbPixelsCote();
+	int nouvelle_valeur;
 	int indice;
 	
-	for(int j=0; j< depart.getHauteur(); j++)
+	for(int j=nb_pixels_cote; j< depart.getHauteur()+nb_pixels_cote; j++)
 	{
-		for(int i=0; i< depart.getLargeur(); i++)
+		for(int i=nb_pixels_cote; i< depart.getLargeur()+nb_pixels_cote; i++)
 		{
-			indice = depart.getLargeur()*j+i;
-			erreur = depart.getPixel(indice)*arrivee.getPixel(indice);
+			indice = erreurdiffusee.getLargeur()*j+i;
+			erreur = erreurdiffusee.getPixel(indice)*arrivee.getPixel(indice);
 			
-			   //A remplir
+			
+			for(int k=0; k<nb_pixels_cote+1; k++)
+			{
+				for(int l=0; l<nb_pixels_cote+1; l++)
+				{
+					if((k!=0)&&(l!=0))
+					{
+						nouvelle_valeur = erreurdiffusee.getPixel(erreurdiffusee.getLargeur()*(k+j) + (l+i));
+						nouvelle_valeur =  nouvelle_valeur + matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
+						arrivee.setPixel(arrivee.getLargeur()*(k+j)+(l+i), nouvelle_valeur);
+					}
+				}
+			}
+			
+			
+			for(int k=0; k<nb_pixels_cote; k++)
+			{
+				for(int l=0; l<nb_pixels_cote; l++)
+				{
+					nouvelle_valeur = erreurdiffusee.getPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote).getLargeur()*(k+j+1)+(l+i-nb_pixels_cote));
+					nouvelle_valeur =  nouvelle_valeur + matrice.getValeurGauche(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
+					arrivee.setPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote), nouvelle_valeur);
+				}
+			}
+			//A remplir
 			
 			/*pixel(x+1][y) := pixel[x+1][y] + 7/16 * quant_error
 			 * pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
@@ -281,13 +311,13 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 	}	
 	
 	
-	for(int k=0; k<matrice.getNbPixelsCote()+1; k++)
+/*	for(int k=0; k<matrice.getNbPixelsCote()+1; k++)
 	{
 		for(int l=0; l<matrice.getNbPixelsCote()+1; l++)
 		{
-			arrivee.setPixel(depart.getLargeur()*k+l, 0);
+			arrivee.setPixel(depart.getLargeur()*(k+j)+(l+i), depart.getPixel(depart.getLargeur()*(k+j)+(l+i)));
 		}
-	}
+	}*/
 	
 	/*for(int k=0; k<matrice.getNbPixelsCote(); k++)
 	{
