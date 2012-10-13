@@ -56,7 +56,7 @@ void Histogramme::setNombrePixels(int nombrePixels)
 	int cumul=0;
 	int val_cumul=0;
 	int reste;
-	std::cout<<"ETAPE : setNombrePixels 1"<<std::endl;
+
 	for(int i=0; i<=valeur_max; i++)
 	{
 		cumul += getValeur(i);
@@ -79,14 +79,13 @@ void Histogramme::setNombrePixels(int nombrePixels)
 			val_cumul += getValeur(i);
 		}
 		reste = nombrePixels-val_cumul;
-	std::cout<<"ETAPE : setNombrePixels 2"<<std::endl;	
+
 		for(int i=0; reste>0; i++)
 		{
 			setValeur(i, getValeur(i)+1);
 			reste--;
 		}
 	}
-	std::cout<<"ETAPE : setNombrePixels 3"<<std::endl;
 }
 
 

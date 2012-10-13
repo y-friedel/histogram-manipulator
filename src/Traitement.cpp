@@ -1,5 +1,6 @@
 #include "Traitement.hpp"
 #include <iostream>
+#include <cstdlib> 
 
 	Traitement::Traitement()
 	{
@@ -146,6 +147,62 @@ void Traitement::filtreMedian(const Image& depart, Image& arrivee)
 
 }
 
+/* Cette procédure renvoie une image dont les cotés ont été ajoutés en miroir (de la taille nb_pixels)
+ * Paramètres :
+ * 	Image de départ (qu'on ne change pas)
+ * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et du miroir
+ * 
+ * 	Donc pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
+ */
+void Traitement::miroir(const Image& depart, Image& arrivee, int nb_pixels)
+{
+	arrivee = Image();
+	arrivee.setLargeur(depart.getLargeur()+2*nb_pixels);
+	arrivee.setHauteur(depart.getHauteur()+2*nb_pixels);
+	arrivee.saveAscii("./data/temp.pgm");
+ 
+	//on s'occcupe de l'image
+	for(int j=0; j< depart.getHauteur(); j++)
+	{
+		for(int i=0; i< depart.getLargeur(); i++)
+		{    
+			arrivee.setPixel((arrivee.getLargeur())*(j+nb_pixels)+i+nb_pixels, depart.getPixel(depart.getLargeur()*j+i));
+		}
+	}
+	
+	//on s'occupe du miroir
+	for(int i=0; i<nb_pixels; i++)
+	{
+		//bord du haut
+		for(int j=0; j< depart.getLargeur(); j++)
+		{ 
+			//bord du haut
+				arrivee.setPixel(arrivee.getLargeur()*i+nb_pixels+j, depart.getPixel(depart.getLargeur()*(nb_pixels-i-1)+j));
+			//bord du bas
+				arrivee.setPixel(arrivee.getLargeur()*(i+depart.getHauteur()+nb_pixels)+j+nb_pixels, depart.getPixel(depart.getLargeur()*(depart.getHauteur()-i-1)+j));
+		}
+		
+		for(int j=0; j< depart.getHauteur(); j++)
+		{
+			//bord de gauche
+				arrivee.setPixel(arrivee.getLargeur()*(j+nb_pixels)+i, depart.getPixel(depart.getLargeur()*j+(nb_pixels-i-1)));
+			//bord de droite
+				arrivee.setPixel(arrivee.getLargeur()*(j+nb_pixels)+i+depart.getLargeur()+nb_pixels, depart.getPixel(depart.getLargeur()*j+(depart.getLargeur()-i-1)));
+		}
+		
+		for(int j=0; j<nb_pixels; j++)
+		{
+			//coin haut gauche
+				arrivee.setPixel(arrivee.getLargeur()*j+i, depart.getPixel(depart.getLargeur()*(nb_pixels-j-1)+nb_pixels-i));
+			//coin haut droit
+				arrivee.setPixel(arrivee.getLargeur()*j+i+depart.getLargeur()+nb_pixels, depart.getPixel(depart.getLargeur()*(nb_pixels-j-1)+depart.getLargeur()-1-i));
+			//coin bas gauche
+				arrivee.setPixel(arrivee.getLargeur()*(i+depart.getHauteur()+nb_pixels)+j, depart.getPixel(depart.getLargeur()*(depart.getHauteur()-i-1)+nb_pixels-j-1));
+			//coin bas droite
+				arrivee.setPixel(arrivee.getLargeur()*(i+depart.getHauteur()+nb_pixels)+j+depart.getLargeur()+nb_pixels, depart.getPixel(depart.getLargeur()*(depart.getHauteur()-i-1)+depart.getLargeur()-1-j));
+		}
+	}
+}
 /* Cette procédure s'occupe de la diffusion d'erreur
  * Paramètres :
  * 	Image de départ (qu'on ne change pas)

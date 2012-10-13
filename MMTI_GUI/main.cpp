@@ -69,18 +69,18 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/rs2.pgm");
+		Image image = Image("./data/bruit.pgm");
 		Image image1 = Image(image);
 		
-		/*fonction.specification(im, image1, newHisto);
+		fonction.specification(im, image1, newHisto);
 		image1.saveAscii("./data/specification.pgm");
 
-		fonction.negatif(im, image1);
+		/*fonction.negatif(im, image1);
 		im.saveAscii("./data/t1a.pgm");
 		image1.saveAscii("./data/t1b.pgm");
 			fonction.negatif(im, image1);
 		im.saveAscii("./data/t2a.pgm");
-		image1.saveAscii("./data/t2b.pgm");
+		image1.saveAscii("./data/t2b.pgm");*/
 
 
 		Histogramme histo1 = Histogramme(image1);
@@ -92,7 +92,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Histogramme histo2 = Histogramme(image1);
 		histo2.exporter_TXT("./data/Hegalisation.txt");	
 		
-		Image image2;
+	/*	Image image2;
 		fonction.recadrage(im, image2);
 		image2.saveAscii("./data/recadrage.pgm");
 		
@@ -100,6 +100,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		histo3.exporter_TXT("./data/Hrecadrage.txt");*/
 		
 		Traitement traitement = Traitement();
+		
+		traitement.miroir(image, image1, 75);
+		image1.saveAscii("./data/miroir.pgm");
+		
 		//traitement.versionGlissante(image, image1, newHisto, 1);
 	//traitement.specificationDansFenetre(image, image1, newHisto, 2, 5, 0, 1);
 
@@ -107,7 +111,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		//image1.saveAscii("./data/versionGlissante.pgm");
 		
 		//NuagePoint nuage = NuagePoint(10000, 5000);
-		NuagePoint nuage = NuagePoint();
+	/*	NuagePoint nuage = NuagePoint();
 		nuage.ajoutPoint(Point(1,1));
 		nuage.ajoutPoint(Point(2,2));
 		nuage.ajoutPoint(Point(3,3));
@@ -145,7 +149,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		  
 		}
 		
-		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;
+		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;*/
 	
 	return 0;
 	}		

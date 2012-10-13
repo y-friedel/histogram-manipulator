@@ -39,7 +39,6 @@ void Fonction::correspondance(const Image& depart, Image& arrivee)
 	{     
 	     arrivee.setPixel(i, valeurs[arrivee.getPixel(i)]);
 	}  
-	std::cout<<"ETAPE : correspondance"<<std::endl;
 }
 
 
@@ -73,19 +72,18 @@ void Fonction::recadrage(const Image& depart, Image &arrivee)
 	
 	int intensiteMax = histo.getIntensiteMax();
 	int intensiteMin = histo.getIntensiteMin();
-
+	int difference;
 	int tailleDepart = intensiteMax-intensiteMin;
 	
 	//f(k)=255*(k-min)/(max-min)
 	for(int k=0; k<=valeur_max; k++)
 	{	
-	    int difference = k-intensiteMin;
+	    difference = k-intensiteMin;
 	    
-	    if ((k-intensiteMin)<0)
+	    if (difference<0)
 		  difference = 0;
 	    
 	    valeurs[k] = 255*(difference)/tailleDepart;
-	   
 	}
 	
 	//On appelle la fonction de correspondance
@@ -105,22 +103,15 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 { 
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
-	cumulDepart.exporter_TXT("cumuldepart.txt");
-	std::cout<<"ETAPE : spec 1"<<std::endl;
 	//On calcul l'histogramme cumulé de l'histogramme de depart	
 	cumulDepart.cumul();
-	std::cout<<"ETAPE : spec 2"<<std::endl;
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
 	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
 
-	std::cout<<"ETAPE : spec 2.1"<<std::endl;
 	//cible.exporter_TXT("cible.txt");
-  std::cout<<"ETAPE : spec 3"<<std::endl;
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	//Histogramme cumulCible = Histogramme(cible);
-	std::cout<<"ETAPE : spec 4"<<std::endl;
 	cible.cumul();
-	std::cout<<"ETAPE : spec 5"<<std::endl;
 	//On applique l'algorithme vu dans le cours
 	int i=0;
 	int j=0;

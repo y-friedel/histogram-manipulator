@@ -16,6 +16,8 @@ public :
 	
 
 	void filtreMedian(const Image& depart, Image& arrivee);
+	void miroir(const Image& depart, Image& arrivee, int nb_pixels);
+	
 	void diffusionErreur(const Image& depart, Image& arrivee);
 	void diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice);
 	
