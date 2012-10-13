@@ -278,7 +278,6 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
     std::vector<NuagePoint> classes = std::vector<NuagePoint>();
 
     std::multimap<int, Point> m_centres = std::multimap<int, Point>();
-
     //std::vector<Point> centres = std::vector<Point>();
     //std::vector<int> index_centres = std::vector<int>();
 
@@ -312,6 +311,8 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
         alea = rand()%(nuage.size());
         temporaire = getPoint(alea);
         classes.push_back(NuagePoint(temporaire));
+
+        m_centres.erase(alea);
         m_centres.insert((std::make_pair(alea, temporaire)));
         //centres.push_back(temporaire);
         //index_centres.push_back(alea);
