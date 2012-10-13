@@ -149,7 +149,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		//image1.saveAscii("./data/versionGlissante.pgm");
 		
 		//NuagePoint nuage = NuagePoint(10000, 5000);
-	/*	NuagePoint nuage = NuagePoint();
+		NuagePoint nuage = NuagePoint();
 		nuage.ajoutPoint(Point(1,1));
 		nuage.ajoutPoint(Point(2,2));
 		nuage.ajoutPoint(Point(3,3));
@@ -174,7 +174,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		//nuage.afficher();
 		std::vector<NuagePoint> table_nuage_points = std::vector<NuagePoint>();
 		unsigned int nbcluster = 3;
-		int t1 = clock();
+		 t1 = clock();
 
         table_nuage_points = nuage.k_moyennes_m(nbcluster, 100);
 
@@ -187,7 +187,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		}
 		
 		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;
-	*/
+	
 	return 0;
 	}		
 

@@ -285,10 +285,10 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(unsigned int k,unsigned int t)
     std::multimap<int, double> m_moyennes_distances = std::multimap<int, double>();
 
     bool stabilisation = false;
-    double temp;
-    int longueur;
-    bool echange;
+    
+	unsigned int index_min;
     double moyenne;
+    
     bool est_centre;
     Point p;
     
@@ -346,14 +346,10 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(unsigned int k,unsigned int t)
                 {
                     m_distances.erase(j);
                     m_distances.insert(std::make_pair(j, nuage[i].distance((v_centres[j]))));
-                    //distances[j] = nuage[i].distance(centres[j]);
-                    //index_distances[j] = j;
                 }
 
-                //on trie les distances
-                //longueur = distances.size();
-                //longueur = m_distances.size();
-                unsigned int index_min = 0;
+                //on cherche le minimum
+                index_min = 0;
                 for(unsigned int j=0; j<m_distances.size(); j++)
                 {
 					if(m_distances.find(j)->second <= m_distances.find(index_min)->second)
@@ -361,49 +357,16 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(unsigned int k,unsigned int t)
 						index_min = j;
 					}
 				}
-					
-                /*do
-                {
-                    echange = false;
-                    for(int j=0; j<longueur-1; j++)
-                    {						
-                        //if(distances[j]>distances[j+1])
-                        if(m_distances.find(j)->second > m_distances.find(j+1)->second)
-                        {
-                            temp = m_distances.find(j)->second;
-                            m_distances.erase(j);
-                            m_distances.insert(std::make_pair(j, m_distances.find(j+1)->second));
-                            m_distances.erase(j+1);
-                            m_distances.insert(std::make_pair(j+1, temp));
-
-                            echange = true;
-                        }
-                    }
-                    longueur--;
-                }
-                while(echange);*/
-
                 //on regarde le centre plus proche
-                //classes[index_distances[0]].ajoutPoint(nuage[i]);
                 classes[index_min].ajoutPoint(nuage[i]);
-                std::cout << "LAUL " << m_distances.begin()->second << std::endl;
-
-
             }
         }
 
         //recalcul des centres
-        //copy(centres.begin(), centres.end(), anciens_centres.begin());
-
-       // copy(m_centres.begin(), m_centres.end(), m_anciens_centres.begin());
-
         v_anciens_centres = std::vector<Point>(v_centres);
 
         for(unsigned int i=0; i<k; i++)
         {
-            //m_moyennes_distances.resize(classes[i].getTaille());
-            //index_moyennes_distances.resize(classes[i].getTaille());
-
             for(int j=0; j<classes[i].getTaille(); j++)
             {
                 moyenne = 0;
@@ -412,51 +375,25 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(unsigned int k,unsigned int t)
                 {
                     moyenne += classes[i].getPoint(j).distance(classes[i].getPoint(k));
                 }
-                //moyennes_distances[j]= moyenne;
-                //index_moyennes_distances[j] = j;
                 m_moyennes_distances.erase(j);
                 m_moyennes_distances.insert(std::make_pair(j, moyenne));
             }
-            //on trie les moyennes
-            longueur = m_moyennes_distances.size();
-
-            do
+            
+            //on cherche le minimum
+            index_min= 0;
+            for(unsigned int j=0; j<m_moyennes_distances.size(); j++)
             {
-                echange = false;
-                for(int j=0; j<longueur-1; j++)
+				if(m_moyennes_distances.find(j)->second <= m_moyennes_distances.find(index_min)->second)
                 {
-                    //if(moyennes_distances[j] > moyennes_distances[j+1])
-                    if(m_moyennes_distances.find(j)->second > m_moyennes_distances.find(j+1)->second)
-                    {
-                        //temp = moyennes_distances[j];
-                        //moyennes_distances[j] = moyennes_distances[j+1];
-                        //moyennes_distances[j+1] = temp;
-
-                        //temp2 = index_moyennes_distances[j];
-                        //index_moyennes_distances[j] = index_moyennes_distances[j+1];
-                        //index_moyennes_distances[j+1] = temp2;
-
-                        temp = m_moyennes_distances.find(j)->second;
-                        m_moyennes_distances.erase(j);
-                        m_moyennes_distances.insert(std::make_pair(j, m_moyennes_distances.find(j+1)->second));
-                        m_moyennes_distances.erase(j+1);
-                        m_moyennes_distances.insert(std::make_pair(j+1, temp));
-
-                        echange = true;
-                    }
-                }
-                longueur--;
-            }
-            while(echange);
-
-            //centres[i] = classes[i].getPoint(index_moyennes_distances[0]);
-            v_centres[i] = classes[i].getPoint(m_moyennes_distances.begin()->first);
+					index_min = j;
+				}
+			}
+            v_centres[i] = classes[i].getPoint(index_min);
         }
 
         //Ovérifie si les centres sont stabilisés
         for(unsigned int i=0; i<k; i++)
         {
-            //if(!centres[i].egal(anciens_centres[i]))
             if(!v_centres[i].egal(v_anciens_centres[i]))
             {
                 stabilisation = false;
