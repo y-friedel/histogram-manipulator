@@ -297,7 +297,7 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 				{
 					nouvelle_valeur = erreurdiffusee.getPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote));
 					nouvelle_valeur =  nouvelle_valeur + matrice.getValeurGauche(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
-					arrivee.setPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote), nouvelle_valeur);
+					arrivee.setPixel(arrivee.getLargeur()*(k+j)+(l+i-nb_pixels_cote), nouvelle_valeur);
 				}
 			}
 			//A remplir
