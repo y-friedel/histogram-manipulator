@@ -20,13 +20,12 @@ private :
 	~NuagePoint();
 	
 	Point getPoint(int i) const;
-	void setPoint(int i, Point p);
+	void setPoint(int i, Point& p);
 	int getTaille() const;
 	
-	void ajoutPoint(Point& point);
-	void suppressionPoint(int i, Point point);
+	void ajoutPoint(const Point& point);
 	
-	void afficher();
+	void afficher() const;
 	
 	std::vector<NuagePoint> k_moyennes(int k, int t);
 

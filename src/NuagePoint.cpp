@@ -45,7 +45,7 @@ Point NuagePoint::getPoint(int i) const
 	return nuage[i];
 }
 
-void NuagePoint::setPoint(int i, Point p)
+void NuagePoint::setPoint(int i, Point& p)
 {
 	nuage[i] = p;
 }
@@ -55,17 +55,13 @@ int NuagePoint::getTaille() const
 	return nuage.size();
 }
 
-void NuagePoint::ajoutPoint(Point& point)
+void NuagePoint::ajoutPoint(const Point& point)
 {
 	nuage.push_back(point);
 }
 
-void NuagePoint::suppressionPoint(int i, Point point)
-{
-	nuage.erase(nuage.begin()+i);
-}
 	
-void NuagePoint::afficher()
+void NuagePoint::afficher() const
 {
 	for(unsigned int i=0; i<nuage.size(); i++)
 		nuage[i].afficher();

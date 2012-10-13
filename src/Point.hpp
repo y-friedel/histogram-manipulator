@@ -26,9 +26,9 @@ private :
 	void setMarque(bool _marque);
 	
 	bool egal(Point& p);
-	double distance(Point p);
+	double distance(const Point& p) const;
 	
-	void afficher();
+	void afficher() const;
 
 };
 

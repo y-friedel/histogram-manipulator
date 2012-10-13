@@ -63,7 +63,7 @@ bool Point::egal(Point& p)
 	
 }
 
-double Point::distance(Point p)
+double Point::distance(const Point& p) const 
 {
 	double a = pow(p.getX()-x,2);
 	double b = pow(p.getY()-y,2);
@@ -72,7 +72,7 @@ double Point::distance(Point p)
   
 }
 
-void Point::afficher()
+void Point::afficher() const
 {
 	std::cout<<"("<<x<<","<<y<<")"<<" "<<marque<<std::endl;
 }

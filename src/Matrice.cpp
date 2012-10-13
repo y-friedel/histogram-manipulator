@@ -10,7 +10,7 @@ Matrice::Matrice(std::vector<int> _valeurs, int _longueur)
 	
 	compte = 0;
 	
-	for(int i=0; i<valeurs.size();i++)
+	for(unsigned int i=0; i<valeurs.size();i++)
 	{
 		compte += valeurs[i];	  
 	}
