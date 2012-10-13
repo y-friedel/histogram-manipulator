@@ -135,7 +135,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		
 		//nuage.afficher();
 		std::vector<NuagePoint> table_nuage_points = std::vector<NuagePoint>();
-		int nbcluster = 3;
+		unsigned int nbcluster = 3;
 		int t1 = clock();
 
         table_nuage_points = nuage.k_moyennes_m(nbcluster, 100);
