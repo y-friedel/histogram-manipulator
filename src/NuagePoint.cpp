@@ -354,20 +354,17 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
         {
             if(nuage[i].getMarque()==false)
             {	//on calcule les distances
-            
                 for(int j=0; j<k; j++)
                 {
-                    m_distances.insert(std::make_pair(i, nuage[i].distance((m_centres.find(j)->second))));
+                    m_distances.erase(j);
+                    m_distances.insert(std::make_pair(j, nuage[i].distance((m_centres.find(j)->second))));
                     //distances[j] = nuage[i].distance(centres[j]);
                     //index_distances[j] = j;
-                                iter++;
-			std::cout << "iter : " << iter << std::endl;
                 }
 
                 //on trie les distances
                 //longueur = distances.size();
                 longueur = m_distances.size();
-
                 do
                 {
                     echange = false;
@@ -385,7 +382,9 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
                             //index_distances[j+1] = temp2;
 
                             temp = m_distances.find(j)->second;
+                            m_distances.erase(j);
                             m_distances.insert(std::make_pair(j, m_distances.find(j+1)->second));
+                            m_distances.erase(j+1);
                             m_distances.insert(std::make_pair(j+1, temp));
 
                             echange = true;
@@ -425,6 +424,7 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
                 }
                 //moyennes_distances[j]= moyenne;
                 //index_moyennes_distances[j] = j;
+                m_moyennes_distances.erase(j);
                 m_moyennes_distances.insert(std::make_pair(j, moyenne));
             }
             //on trie les moyennes
@@ -447,7 +447,9 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
                         //index_moyennes_distances[j+1] = temp2;
 
                         temp = m_moyennes_distances.find(j)->second;
+                        m_moyennes_distances.erase(j);
                         m_moyennes_distances.insert(std::make_pair(j, m_moyennes_distances.find(j+1)->second));
+                        m_moyennes_distances.erase(j+1);
                         m_moyennes_distances.insert(std::make_pair(j+1, temp));
 
                         echange = true;
@@ -458,6 +460,7 @@ std::vector<NuagePoint> NuagePoint::k_moyennes_m(int k, int t)
             while(echange);
 
             //centres[i] = classes[i].getPoint(index_moyennes_distances[0]);
+            m_centres.erase(i);
             m_centres.insert(std::make_pair(i, classes[i].getPoint(m_moyennes_distances.begin()->first)));
         }
 
