@@ -35,7 +35,10 @@ SOURCES += main.cpp \
     ../src/Image.cpp \
     ../src/Traitement.cpp \
     ../src/Histogramme.cpp \
-    ../src/Fonction.cpp
+    ../src/Fonction.cpp \
+    ../src/Point.cpp \
+    ../src/NuagePoint.cpp \
+    ../src/Matrice.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -46,7 +49,10 @@ HEADERS += \
     ../src/Image.hpp \
     ../src/Traitement.hpp \
     ../src/Histogramme.hpp \
-    ../src/Fonction.hpp
+    ../src/Fonction.hpp \
+    ../src/Point.hpp \
+    ../src/NuagePoint.hpp \
+    ../src/Matrice.hpp
 
 FORMS += \
     MainWindow.ui

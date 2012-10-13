@@ -1,12 +1,12 @@
 #include <QtGui/QApplication>
 //#include "qmlapplicationviewer.h"
 
-#include "Image.hpp"
-#include "Histogramme.hpp"
-#include "Fonction.hpp"
-#include "Traitement.hpp"
-#include "Point.hpp"
-#include "NuagePoint.hpp"
+#include "../src/Image.hpp"
+#include "../src/Histogramme.hpp"
+#include "../src/Fonction.hpp"
+#include "../src/Traitement.hpp"
+#include "../src/Point.hpp"
+#include "../src/NuagePoint.hpp"
 #include <iostream>
 
 #include "MainWindow.h"
@@ -137,9 +137,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		std::vector<NuagePoint> table_nuage_points = std::vector<NuagePoint>();
 		int nbcluster = 3;
 		int t1 = clock();
-		table_nuage_points = nuage.k_moyennes(nbcluster, 100);
-		
-		
+
+        table_nuage_points = nuage.k_moyennes_m(nbcluster, 100);
 
 		int t2 = clock();
 		for(int i=0; i<nbcluster; i++)

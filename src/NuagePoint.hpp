@@ -27,7 +27,8 @@ private :
 	
 	void afficher() const;
 	
-	std::vector<NuagePoint> k_moyennes(int k, int t);
+    std::vector<NuagePoint> k_moyennes(int k, int t);
+    std::vector<NuagePoint> k_moyennes_m(int k, int t);
 
 };
 
