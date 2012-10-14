@@ -157,7 +157,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
 		
 		
-		traitement.versionGlissante(image, image1, newHisto, 40);
+		traitement.versionGlissantePixel(image, image1, newHisto, 1);
 		
 		/*traitement.specificationDansFenetre(image, image1, newHisto, 0, 5, 0, 5, 12, 2);*/
 		

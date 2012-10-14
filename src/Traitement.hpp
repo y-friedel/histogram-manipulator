@@ -20,11 +20,11 @@ public :
 	void diffusionErreur(const Image& depart, Image& arrivee);
 	void diffusionErreurMatrice(const Image& depart, Image& arrivee, MatriceErreur matrice);
 	
-	void specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max);
-	void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels);
+	void specificationDansImagette(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max);
+	void versionGlissanteImagette(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels);
 	
-	void specificationDansFenetre2(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels);
-	void versionGlissante2(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels);
+	void specificationDansPixel(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels);
+	void versionGlissantePixel(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels);
 	
 	
 	

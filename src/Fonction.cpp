@@ -169,7 +169,7 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 }
 
 
-int Fonction::specification2(const Image& depart, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite, int nb_pixels)
+int Fonction::specificationPixel(const Image& depart, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite, int nb_pixels)
 { 
 	Histogramme temp = Histogramme(cible);
 	int milieu;
@@ -181,7 +181,7 @@ int Fonction::specification2(const Image& depart, const Histogramme& histo_depar
 	cumulDepart.cumul();
 
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
-	temp.setNombrePixels2(cumulDepart.getValeur(cumulDepart.getValeurMax()), cumulDepart.getValeurMax());
+	temp.setNombrePixelsPixel(cumulDepart.getValeur(cumulDepart.getValeurMax()), cumulDepart.getValeurMax());
 
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	temp.cumul();

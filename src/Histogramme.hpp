@@ -30,7 +30,7 @@ private :
 	void agrandirHistogramme(std::vector<int> intensites, int nb_intensite);
 	
 	void setNombrePixels(int nombrePixels);	
-	void setNombrePixels2(int nombrePixels, int nb_intensite);	
+	void setNombrePixelsPixel(int nombrePixels, int nb_intensite);	
 
 	void cumul();
 

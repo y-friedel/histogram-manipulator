@@ -92,7 +92,7 @@ void Histogramme::setNombrePixels(int nombrePixels)
 	}
 }
 
-void Histogramme::setNombrePixels2(int nombrePixels, int nb_intensite)
+void Histogramme::setNombrePixelsPixel(int nombrePixels, int nb_intensite)
 {
 	int cumul;
 	int val_cumul = 0;

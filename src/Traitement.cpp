@@ -329,7 +329,7 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max)
+void Traitement::specificationDansImagette(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max)
 {
 
 	//On créé une nouvelle image à la taille de la fenetre
@@ -372,7 +372,7 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 }
 
 
-void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
+void Traitement::versionGlissanteImagette(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
 {
 	miroir(depart, arrivee, nb_pixels);
 	Image temp = Image(arrivee);
@@ -384,7 +384,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	{
 		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
 		{
-			specificationDansFenetre(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels);
+			specificationDansImagette(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels);
 		}
 		
 	}
@@ -392,7 +392,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	couper_image(temp, arrivee, nb_pixels);
 }
 
-void Traitement::specificationDansFenetre2(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels)
+void Traitement::specificationDansPixel(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels)
 {
 
 	//On créé une nouvelle image à la taille de la fenetre
@@ -423,17 +423,13 @@ void Traitement::specificationDansFenetre2(const Image& depart, Image& arrivee, 
 
 	//on appelle specification sur notre fenetre
 	Fonction fonction = Fonction(intensites.size());
-	
-	
-	
-
-	pixel = fonction.specification2(fenetre, histo_fenetre, intensites, cible, depart.getValeurMax(), nb_pixels);
+	pixel = fonction.specificationPixel(fenetre, histo_fenetre, intensites, cible, depart.getValeurMax(), nb_pixels);
 	
 	arrivee.setPixel(indice, pixel);
 }
 
 
-void Traitement::versionGlissante2(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
+void Traitement::versionGlissantePixel(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
 {
 	miroir(depart, arrivee, nb_pixels);
 	Image temp = Image(arrivee);
@@ -445,7 +441,7 @@ void Traitement::versionGlissante2(const Image& depart, Image& arrivee, Histogra
 	{
 		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
 		{
-			specificationDansFenetre2(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
+			specificationDansPixel(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
 			
 		}
 		
