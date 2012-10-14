@@ -89,11 +89,11 @@ int Image::getValeurMax() const
 {
 	return valeur_max;
 }
-
+/*
 void Image::setValeurMax(int _valeur_max)
 {
 	valeur_max = _valeur_max;
-}
+}*/
 
 void Image::setLargeur(int _largeur)
 {

@@ -157,7 +157,7 @@ void Traitement::filtreMedian(const Image& depart, Image& arrivee)
  */
 void Traitement::miroir(const Image& depart, Image& arrivee, int nb_pixels)
 {
-	arrivee = Image();
+	arrivee = Image(depart);
 	arrivee.setLargeur(depart.getLargeur()+2*nb_pixels);
 	arrivee.setHauteur(depart.getHauteur()+2*nb_pixels);
 
@@ -209,7 +209,7 @@ void Traitement::couper_image(const Image& depart, Image& arrivee, int nb_pixels
 {
 	arrivee.setHauteur(depart.getHauteur()-2*nb_pixels);
 	arrivee.setLargeur(depart.getLargeur()-2*nb_pixels);
-	
+
 	for(int j=0; j<arrivee.getHauteur(); j++)
 	{
 		for(int i=0; i<arrivee.getLargeur(); i++)
@@ -217,7 +217,6 @@ void Traitement::couper_image(const Image& depart, Image& arrivee, int nb_pixels
 			arrivee.setPixel(j*arrivee.getLargeur()+i, depart.getPixel((j+nb_pixels)*depart.getLargeur()+i+nb_pixels));
 		}
 	}
-  
 }
 
 /* Cette procédure s'occupe de la diffusion d'erreur
@@ -239,9 +238,7 @@ void Traitement::diffusionErreur(const Image& depart, Image& arrivee)
 			arrivee.setPixel(i,0);
 		else
 			arrivee.setPixel(i,depart.getValeurMax());
-	  
 	}
-arrivee.saveAscii("./data/diffusionErreur.pgm");
 }
 
 /* Cette procédure s'occupe de la diffusion d'erreur par matrice
@@ -255,7 +252,6 @@ arrivee.saveAscii("./data/diffusionErreur.pgm");
 void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice)
 {
 	arrivee = Image(depart);
-	//Image temporaire = Image(depart);
 	int nouveau_px;
 	int ancien_px;
 	double repercussion;
@@ -263,11 +259,6 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 	
 	Traitement traitement = Traitement();
 	traitement.miroir(depart, arrivee, matrice.getNbPixelsCote());
-	//arrivee.miroir();
-	arrivee.saveAscii("./data/diffusionErreur.pgm");
-	//On applique diffusion d'erreur sur depart
-	//arrivee devient l'image avec les erreurs diffusées
-	//diffusionErreur(depart, arrivee);
 	
 	int erreur;
 	int nb_pixels_cote = matrice.getNbPixelsCote();
@@ -294,18 +285,9 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 							nouveau_px = depart.getValeurMax();
 					  
 						erreur = ancien_px - nouveau_px;
-					  
 						repercussion = matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
-					  
 						nouveau_px = arrivee.getPixel(indice) + erreur*matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
-			
-						std::cout<<matrice.getValeurDroit(l*(nb_pixels_cote)+k)<<"/"<<matrice.getCompte()<<" = "<<repercussion<<std::endl;
-					      
-					/*	nouvelle_valeur = arrivee.getPixel(arrivee.getLargeur()*(k+j) + (l+i));
-						nouvelle_valeur =  nouvelle_valeur + matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
-						*/
-						std::cout<<" Nouvelle : "<<nouveau_px<<std::endl;
-						arrivee.setPixel(indice, nouveau_px);
+						arrivee.setPixel(indice, abs(nouveau_px));
 					}
 				}
 				
@@ -323,12 +305,8 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 							nouveau_px = depart.getValeurMax();
 					  
 						erreur = ancien_px - nouveau_px;
-					  
 						nouveau_px = arrivee.getPixel(indice) + erreur*matrice.getValeurGauche(k*(nb_pixels_cote-1)+l)/matrice.getCompte();
-			
-						std::cout<<matrice.getValeurGauche(l*(nb_pixels_cote-1)+k)<<"/"<<matrice.getCompte()<<" = "<<repercussion<<std::endl;
-						
-						arrivee.setPixel(indice, nouveau_px);
+						arrivee.setPixel(indice, abs(nouveau_px));
 					}
 				}
 			}
@@ -336,39 +314,12 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 			if(arrivee.getPixel(arrivee.getLargeur()*j+i)<=moyenne)
 				arrivee.setPixel(arrivee.getLargeur()*j+i,0);
 			else
-				arrivee.setPixel(arrivee.getLargeur()*j+i, arrivee.getValeurMax());
-			
-
-			//A remplir
-			
-			/*  oldpixel := pixel[x][y]
-			    newpixel := find_closest_palette_color(oldpixel)
-			    pixel[x][y] := newpixel
-			    quant_error := oldpixel - newpixel
-			    pixel[x+1][y] := pixel[x+1][y] + 7/16 * quant_error
-			    pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
-			    pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
-			    pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
-			 */
+				arrivee.setPixel(arrivee.getLargeur()*j+i, arrivee.getValeurMax());	
 		}		
 	}	
-	
-	
-/*	for(int k=0; k<matrice.getNbPixelsCote()+1; k++)
-	{
-		for(int l=0; l<matrice.getNbPixelsCote()+1; l++)
-		{
-			arrivee.setPixel(depart.getLargeur()*(k+j)+(l+i), depart.getPixel(depart.getLargeur()*(k+j)+(l+i)));
-		}
-	}*/
-	
-	/*for(int k=0; k<matrice.getNbPixelsCote(); k++)
-	{
-		for(int l=0; l<matrice.getNbPixelsCote(); l++)
-		{
-	    
-		}
-	}*/
+
+	Image temp = Image(arrivee);
+	couper_image(temp, arrivee, nb_pixels_cote);
 }
 
 /* Cette procédure s'occupe de la version glissante de la specification d'histogramme
@@ -454,7 +405,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
   
 
 
-  couper_image(temp, arrivee, nb_pixels);
+ // couper_image(temp, arrivee, nb_pixels);
 
   
 	/*arrivee = Image(depart);

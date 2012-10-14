@@ -70,7 +70,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/rs2.pgm");
+		Image image = Image("./data/rs.pgm");
 		Image image1 = Image(image);
 
 		/*fonction.negatif(im, image1);
@@ -84,7 +84,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Histogramme histo1 = Histogramme(image1);
 		histo1.exporter_TXT("./data/Hspecification.txt");
 		
-		fonction.egalisation(im, image1);
+		fonction.egalisation(image, image1);
 		image1.saveAscii("./data/egalisation.pgm");
 		
 		Histogramme histo2 = Histogramme(image1);
@@ -126,7 +126,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		tableau_droit.push_back(1);
 		
 		Matrice stucki = Matrice(tableau_gauche, tableau_droit, 2);
-		std::cout<<stucki.getCompte()<<std::endl;
 		
 		traitement.diffusionErreurMatrice(image, image1, stucki);
 		image1.saveAscii("./data/diffusionErreurMatrice.pgm");
