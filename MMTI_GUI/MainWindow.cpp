@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include "../src/Image.hpp"
 #include "../src/Fonction.hpp"
+#include "../src/Traitement.hpp"
 
 #include <string>
 #include <iostream>
@@ -30,10 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->b_load_img, SIGNAL(clicked()), this, SLOT(load_img()));
 
     //liste de filtres
-    ui->cb_filters->addItem(QString("Correspondance"));
+    ui->cb_filters->addItem(QString("Diffusion d'erreur"));
     ui->cb_filters->addItem(QString("Negatif"));
     ui->cb_filters->addItem(QString("Recadrage"));
     ui->cb_filters->addItem(QString("Egalisation"));
+    ui->cb_filters->addItem(QString("Filtre Median"));
+    //ui->cb_filters->addItem(QString("Egalisation"));
 
     //bouton choix de filtre
     connect(ui->b_apply, SIGNAL(clicked()), this, SLOT(apply_filter()));
@@ -74,6 +77,7 @@ void MainWindow::load_img()
 
 void MainWindow::apply_filter()
 {
+    Traitement tr = Traitement();
     std::cout << img.getHauteur() << std::endl;
     if(img.getHauteur()!=0)
     {
@@ -85,8 +89,9 @@ void MainWindow::apply_filter()
         switch (ui->cb_filters->currentIndex())
         {
         case 0:
-          std::cout << "Correspondance" << std::endl;
-          func.correspondance(img, output);
+          std::cout << "Diff erreur" << std::endl;
+          tr.diffusionErreur(img, output);
+          //func.correspondance(img, output);
           break;
         case 1:
           std::cout << "Negatif" << std::endl;
@@ -100,6 +105,14 @@ void MainWindow::apply_filter()
           std::cout << "Egalisation" << std::endl;
           func.egalisation(img, output);
           break;
+        case 4:
+            std::cout << "Filtre Median" << std::endl;
+            tr.filtreMedian(img, output);
+            break;
+        case 5:
+
+            break;
+
         default:
           // Code
           break;

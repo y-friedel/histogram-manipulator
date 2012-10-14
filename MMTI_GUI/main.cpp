@@ -16,207 +16,129 @@
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     int option;
-    bool graphic = 0;
-    while ((option = getopt(argc, argv, "g")) != EOF)
+    int choix = 0;
+    while ((option = getopt(argc, argv, "gdh")) != EOF)
     {
             switch (option)
             {
-              case 'g': graphic = 1;
-                        break;
+              case 'g':
+                choix = 1;
+                break;
+              case 'd':
+                choix = 2;
+                break;
+              case 'h':
+				std::cout <<std::endl<< "Parameters : " << std::endl;
+				std::cout << "\tFilter Mode :\t./projet Filter Input Output" << std::endl;
+				std::cout << "\tGraphic Mode :\t./projet -g" << std::endl;
+				std::cout << "\tDemo :\t\t./projet -d" << std::endl << std::endl;
+				
+				std::cout << "Filter list :" << std::endl;
+				std::cout << "\t- Negatif" << std::endl;
+				std::cout << "\t- Egalisation" << std::endl;
+				std::cout << "\t- Recadrage" << std::endl;
+				std::cout << "\t- Median" << std::endl;
+				std::cout << "\t- Diffusion" << std::endl << std::endl;
+				
+				std::cout << "Input example :" << std::endl;
+				std::cout << "\t./data/rs2.pgm" << std::endl << std::endl;
+				
+				std::cout << "Output example :" << std::endl;
+				std::cout << "\t./results/rs2_eg.pgm" << std::endl << std::endl;;
+				return 0;
+                break;
             }
     }
-
-	if(graphic)
+    
+	if(choix ==0)
 	{
-	
-		/*    QScopedPointer<QApplication> app(createApplication(argc, argv));
-
-		    QmlApplicationViewer viewer;
-		    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-		    viewer.setMainQmlFile(QLatin1String("qml/MMTI_GUI/main.qml"));
-		    viewer.showExpanded();
-
-		    QString nomImage("src_name");
-		    //viewer.rootContext()->setContextProperty("src_name", nomImage);
-
-
-		    return app->exec();*/
-
-		    QApplication app(argc, argv);
-		    MainWindow m;
-		    m.show();
-		    return app.exec();
-	}else{
-		if(argc != 3)
+        std::cout << "Traitement" << std::endl;
+        
+        //On prend les arguments
+        if(argc != 4)
 		{
-			std::cout << "wrong parameter" << std::endl;
+			std::cout << "Type \"./projet -h\" for help" << std::endl;
 			return -1;	
 		}
-			std::string input = std::string(argv[1]);
-			std::string output = std::string(argv[2]);
-
-		Image im = Image();
-		std::string exp = "./data/Hdepart.txt";
-
-		im.load(input.c_str());
-
-		Image imcpy = Image(im);
-		Histogramme histo = Histogramme(im);
-		histo.exporter_TXT(exp.c_str());
-
-	//	imcpy->saveBin(output.c_str());
-		imcpy.saveAscii(output.c_str());
-		histo.save("Histogramme_esper");	
-
-		std::vector<int> temp = std::vector<int>();
-
-		//histogramme plat
-		for(int i=0; i<256;i++)	temp.push_back(1);
-	  
-		Histogramme newHisto = Histogramme(temp);    
-
-		//newHisto.setNombrePixels(50000);	 
-		newHisto.save("Histogramme2");
-	    
-		Fonction fonction = Fonction(255);
+		std::string traitement = std::string(argv[1]);
+		std::string input = std::string(argv[2]);
+		std::string output = std::string(argv[3]);
 		
+		std::transform(traitement.begin(), traitement.end(), traitement.begin(), ::tolower);
 		
-		Image image = Image("./data/rs.pgm");
-		Image image1 = Image(image);
-
-		/*fonction.negatif(im, image1);
-		im.saveAscii("./data/t1a.pgm");
-		image1.saveAscii("./data/t1b.pgm");
-			fonction.negatif(im, image1);
-		im.saveAscii("./data/t2a.pgm");
-		image1.saveAscii("./data/t2b.pgm");*/
-
-
-		/*Histogramme histo1 = Histogramme(image1);
-		histo1.exporter_TXT("./data/Hspecification.txt");
-		
-		fonction.egalisation(image, image1);
-		image1.saveAscii("./data/egalisation.pgm");
-		
-		Histogramme histo2 = Histogramme(image1);
-		histo2.exporter_TXT("./data/Hegalisation.txt");	*/
-		
-		
-	/*	Image image2;
-		fonction.recadrage(im, image2);
-		image2.saveAscii("./data/recadrage.pgm");
-		
-		Histogramme histo3 = Histogramme(image2);
-		histo3.exporter_TXT("./data/Hrecadrage.txt");*/
-		
-		Traitement traitement = Traitement();
-		/*traitement.miroir(image, image1, 2);
-		image1.saveAscii("./data/miroir.pgm");
-		
-		traitement.couper_image(image1, image, 2);
-		image.saveAscii("./data/couper_image.pgm");
-		*/
-
-		//fonction.specification(image, image1, newHisto);
-		
-		std::vector<int> tableau_gauche = std::vector<int>();
-		tableau_gauche.push_back(2);
-		tableau_gauche.push_back(4);
-		tableau_gauche.push_back(1);
-		tableau_gauche.push_back(2);
-		
-		std::vector<int> tableau_droit = std::vector<int>();
-		tableau_droit.push_back(0);
-		tableau_droit.push_back(8);
-		tableau_droit.push_back(4);
-		tableau_droit.push_back(8);
-		tableau_droit.push_back(4);
-		tableau_droit.push_back(2);
-		tableau_droit.push_back(4);
-		tableau_droit.push_back(2);
-		tableau_droit.push_back(1);
-		
-	/*	MatriceErreur stucki = MatriceErreur(tableau_gauche, tableau_droit, 2);
-		
-		traitement.diffusionErreurMatrice(image, image1, stucki);
-		image1.saveAscii("./data/diffusionErreurMatrice.pgm");
-		
-		std::vector<int> tableau_gauche2 = std::vector<int>();
-		tableau_gauche2.push_back(3);
-
-		std::vector<int> tableau_droit2 = std::vector<int>();
-		tableau_droit2.push_back(0);
-		tableau_droit2.push_back(7);
-		tableau_droit2.push_back(5);
-		tableau_droit2.push_back(1);*/
-
-		
-		/*MatriceErreur floyd_steinberg = MatriceErreur(tableau_gauche2, tableau_droit2, 1);
-		
-		traitement.diffusionErreurMatrice(image, image1, floyd_steinberg);
-		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
-		
-		
-		traitement.versionGlissantePixel(image, image1, newHisto, 1);
-		
-		/*traitement.specificationDansFenetre(image, image1, newHisto, 0, 5, 0, 5, 12, 2);*/
-		
-		image1.saveAscii("./data/versionGlissante.pgm");
-		
-		Histogramme nepastoucher = Histogramme("./data/nepastoucher.txt");
-		
-		
-		/*newHisto.setNombrePixels(16, 8);
-		newHisto.exporter_TXT("./data/nepastoucher2.txt");	*/
-		//traitement.versionGlissante(image, image1, newHisto, 1);
-	//traitement.specificationDansFenetre(image, image1, newHisto, 2, 5, 0, 1);
-
-
-		//image1.saveAscii("./data/versionGlissante.pgm");
-		
-		//NuagePoint nuage = NuagePoint(10000, 5000);
-	/*	NuagePoint nuage = NuagePoint();
-		nuage.ajoutPoint(Point(1,1));
-		nuage.ajoutPoint(Point(2,2));
-		nuage.ajoutPoint(Point(3,3));
-		nuage.ajoutPoint(Point(3,1));
-		nuage.ajoutPoint(Point(1,3));
-		
-		nuage.ajoutPoint(Point(5,7));
-		nuage.ajoutPoint(Point(6,6));
-		nuage.ajoutPoint(Point(6,7));
-		nuage.ajoutPoint(Point(6,8));	
-		nuage.ajoutPoint(Point(7,6));
-		nuage.ajoutPoint(Point(7,7));
-		nuage.ajoutPoint(Point(7,8));
-		
-		nuage.ajoutPoint(Point(9,3));
-		nuage.ajoutPoint(Point(9,4));
-		nuage.ajoutPoint(Point(10,4));
-		nuage.ajoutPoint(Point(11,2));
-		nuage.ajoutPoint(Point(11,3));
-		nuage.ajoutPoint(Point(12,2));
-		
-		//nuage.afficher();
-		std::vector<NuagePoint> table_nuage_points = std::vector<NuagePoint>();
-		unsigned int nbcluster = 3;
-		 t1 = clock();
-
-        table_nuage_points = nuage.k_moyennes_m(nbcluster, 100);
-
-		int t2 = clock();
-		for(int i=0; i<nbcluster; i++)
+		Image in = Image(input);
+		Image out = Image();
+		if(traitement == "negatif")
 		{
-			table_nuage_points[i].afficher();
-			std::cout<<std::endl;
-		  
+			std::cout << "Negatif" << std::endl;
+			Fonction neg = Fonction(255);
+			neg.negatif(in, out);
 		}
+		else if (traitement == "egalisation")
+		{
+			std::cout << "Egalisation" << std::endl;
+			Fonction eg = Fonction(255);
+			eg.egalisation(in, out);
+		}
+		else if (traitement == "recadrage")
+		{
+			std::cout << "Recadrage" << std::endl;
+			Fonction re = Fonction(255);
+			re.recadrage(in, out);
+		}
+		else if (traitement == "median")
+		{
+			std::cout << "Median" << std::endl;
+			Traitement::filtreMedian(in, out);
+		}		
+		else if (traitement == "diffusion")
+		{
+			std::cout << "Diffusion" << std::endl;
+			Traitement::diffusionErreur(in, out);
+		}
+		out.saveBin(output.c_str());	
 		
-		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;*/
-	
-	return 0;
-	}		
-
-
-
+	}
+	else if(choix ==1)
+	{
+		QApplication app(argc, argv);
+		MainWindow m;
+        m.show();
+        return app.exec();
+	}
+	else if(choix ==2)
+	{
+        std::cout << "==DEMO==" << std::endl;
+        
+		Image rs_dark = Image("./data/rs2.pgm");
+		Image ship = Image("./data/bruit.pgm");
+		Image output = Image();
+		Fonction eg = Fonction(255);
+		eg.egalisation(rs_dark, output);
+		rs_dark.saveBin("./results/squirell.pgm");
+		output.saveBin("./results/squirell_egalisation.pgm");
+		eg.recadrage(rs_dark, output);
+		output.saveBin("./results/squirell_recadrage.pgm");
+		
+		//histogramme plat
+		Histogramme h_plat = Histogramme(std::vector<int>(256,1));
+		eg.specification(rs_dark, output, h_plat);
+		output.saveBin("./results/squirell_egalisation_histo.pgm");
+		
+		//Median
+		Traitement::filtreMedian(ship, output);
+		ship.saveBin("./results/ship.pgm");
+		output.saveBin("./results/ship_median.pgm");
+		
+		Traitement::versionGlissanteImagette(rs_dark, output, h_plat, 30);
+		output.saveBin("./results/squirell_fenetre_imagette.pgm");
+		
+		//~ Traitement::versionGlissantePixel(rs_dark, output, h_plat, 2);
+		//~ output.saveBin("./results/squirell_fenetre_pixel.pgm");
+		
+		Traitement::diffusionErreur(rs_dark, output);
+		output.saveBin("./results/squirell_diff_err.pgm");
+		
+		std::cout << "Results in \"./Results\" Folder" << std::endl;		
+    }
 }

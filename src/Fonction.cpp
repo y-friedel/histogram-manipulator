@@ -42,9 +42,9 @@ void Fonction::correspondance(const Image& depart, Image& arrivee)
 	}  
 }
 
-int Fonction::correspondance2(const Image& depart, std::vector<int> intensites, int nb_intensite)
+/*int Fonction::correspondance2(const Image& depart, std::vector<int> intensites, int nb_intensite)
 {
-	/*arrivee = Image(depart);
+    arrivee = Image(depart);
 	int nb_Pixels = arrivee.getHauteur()*arrivee.getLargeur();*/
 	
 	//On remplace chaque pixel de l'image
@@ -52,8 +52,8 @@ int Fonction::correspondance2(const Image& depart, std::vector<int> intensites, 
 	{
 	     arrivee.setPixel(i, intensites[i]);
 	}  
-	return */
-}
+    return
+}*/
 
 /* Cette procédure renvoie un negatif de l'image de départ
  * Paramètres :
@@ -142,18 +142,17 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
 
-	//On calcul l'histogramme cumulé de l'histogramme de depart	
+	//On calcule l'histogramme cumulé de l'histogramme de depart	
 	cumulDepart.cumul();
 	
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
 	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
-
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	cible.cumul();
+	
 	//On applique l'algorithme vu dans le cours
 	int i=0;
 	int j=0;
-
 	while ((i!=valeur_max)&&(j!=valeur_max+1))
 	{
 		while ( cible.getValeur(j) > cumulDepart.getValeur(i))
@@ -163,7 +162,6 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 		}		
 		j++;		
 	}
-
 	//On appelle la fonction de correspondance
 	correspondance(depart, arrivee);
 }
@@ -190,7 +188,7 @@ int Fonction::specificationPixel(const Image& depart, const Histogramme& histo_d
 	int i=0;
 	int j=0;
 
-	while ((i!=valeur_max)&&(j!=valeur_max+1))
+	while ((i < valeur_max)&&(j < valeur_max+1))
 	{
 		while ( temp.getValeur(j) > cumulDepart.getValeur(i))
 		{
@@ -201,15 +199,13 @@ int Fonction::specificationPixel(const Image& depart, const Histogramme& histo_d
 	}
 
 	milieu = depart.getPixel(nb_pixels+nb_pixels*depart.getLargeur());
-
-	int valeur;
 	
+    int valeur;
 	for(int i=0; i<=valeur_max; i++)
 	{
 		if(intensites[valeurs[i]]==milieu)
 			valeur = i;
 	}
-	
 	return intensites[i];
 }
 

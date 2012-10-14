@@ -18,7 +18,7 @@ public :
 	
 	int getValeur(int intensite);
 	void correspondance(const Image& depart, Image& arrivee);
-	int correspondance2(const Image& depart, std::vector<int> intensites, int nb_intensite);
+    //int correspondance2(const Image& depart, std::vector<int> intensites, int nb_intensite);
 
 	void negatif(const Image& depart, Image &arrivee);
 	void recadrage(const Image& depart, Image &arrivee);
