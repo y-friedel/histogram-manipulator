@@ -8,7 +8,7 @@
 #include "Traitement.hpp"
 #include "Point.hpp"
 #include "NuagePoint.hpp"
-#include "Matrice.hpp"
+#include "MatriceErreur.hpp"
 #include <iostream>
 
 #include "MainWindow.h"
@@ -116,7 +116,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		traitement.couper_image(image1, image, 2);
 		image.saveAscii("./data/couper_image.pgm");
 		*/
-		int t1 = clock();
+
 		//fonction.specification(image, image1, newHisto);
 		
 		std::vector<int> tableau_gauche = std::vector<int>();
@@ -136,11 +136,25 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		tableau_droit.push_back(2);
 		tableau_droit.push_back(1);
 		
-		Matrice stucki = Matrice(tableau_gauche, tableau_droit, 2);
+		MatriceErreur stucki = MatriceErreur(tableau_gauche, tableau_droit, 2);
 		
 		traitement.diffusionErreurMatrice(image, image1, stucki);
 		image1.saveAscii("./data/diffusionErreurMatrice.pgm");
 		
+		std::vector<int> tableau_gauche2 = std::vector<int>();
+		tableau_gauche2.push_back(3);
+
+		std::vector<int> tableau_droit2 = std::vector<int>();
+		tableau_droit2.push_back(0);
+		tableau_droit2.push_back(7);
+		tableau_droit2.push_back(5);
+		tableau_droit2.push_back(1);
+
+		
+		MatriceErreur floyd_steinberg = MatriceErreur(tableau_gauche2, tableau_droit2, 1);
+		
+		traitement.diffusionErreurMatrice(image, image1, floyd_steinberg);
+		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");
 		
 	/*	traitement.versionGlissante(image, image1, newHisto, 3);
 		int t2 = clock();

@@ -245,11 +245,11 @@ void Traitement::diffusionErreur(const Image& depart, Image& arrivee)
  * Paramètres :
  * 	Image de départ (qu'on ne change pas)
  * 	Image d'arrivée (à laquelle on va changer les attributs en fonction de l'image de départ et de la fonction)
- * 	Matrice dont on va se servir pour la diffusion d'erreur
+ * 	MatriceErreur dont on va se servir pour la diffusion d'erreur
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice)
+void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, MatriceErreur matrice)
 {
 	arrivee = Image(depart);
 	int nouveau_px;

@@ -6,7 +6,7 @@
 #include "Image.hpp"
 #include "Histogramme.hpp"
 #include "Fonction.hpp"
-#include "Matrice.hpp"
+#include "MatriceErreur.hpp"
 
 class Traitement{	
 public :
@@ -18,7 +18,7 @@ public :
 	void couper_image(const Image& depart, Image& arrivee, int nb_pixels);
 	
 	void diffusionErreur(const Image& depart, Image& arrivee);
-	void diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice);
+	void diffusionErreurMatrice(const Image& depart, Image& arrivee, MatriceErreur matrice);
 	
 	void specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max);
 	void versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels);
