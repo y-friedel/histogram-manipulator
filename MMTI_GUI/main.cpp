@@ -81,7 +81,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/rs2.pgm");
+		Image image = Image("./data/rs.pgm");
 		Image image1 = Image(image);
 
 		/*fonction.negatif(im, image1);
@@ -156,7 +156,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		traitement.diffusionErreurMatrice(image, image1, floyd_steinberg);
 		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
 		
-		traitement.versionGlissante(image, image1, newHisto, 2);
+		traitement.versionGlissante(image, image1, newHisto, 5);
 		
 		image1.saveAscii("./data/versionGlissante.pgm");
 		

@@ -42,16 +42,17 @@ void Fonction::correspondance(const Image& depart, Image& arrivee)
 	}  
 }
 
-void Fonction::correspondance2(const Image& depart, Image& arrivee, std::vector<int> intensites, int nb_intensite)
+int Fonction::correspondance2(const Image& depart, std::vector<int> intensites, int nb_intensite)
 {
-	arrivee = Image(depart);
-	int nb_Pixels = arrivee.getHauteur()*arrivee.getLargeur();
+	/*arrivee = Image(depart);
+	int nb_Pixels = arrivee.getHauteur()*arrivee.getLargeur();*/
 	
 	//On remplace chaque pixel de l'image
-	for(int i=0; i<nb_Pixels; i++)
+	/*for(int i=0; i<nb_Pixels; i++)
 	{
 	     arrivee.setPixel(i, intensites[i]);
 	}  
+	return */
 }
 
 /* Cette procédure renvoie un negatif de l'image de départ
@@ -168,9 +169,10 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 }
 //const Image& depart, Image &arrivee, const Histogramme& depart, std::vector<int> intensites, Histogramme& cible)
 
-void Fonction::specification2(const Image& depart, Image &arrivee, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite)
+int Fonction::specification2(const Image& depart, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite, int nb_pixels)
 { 
 	Histogramme temp = Histogramme(cible);
+	int milieu;
   
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(histo_depart);
@@ -199,7 +201,21 @@ void Fonction::specification2(const Image& depart, Image &arrivee, const Histogr
 		j++;		
 	}
 
-	correspondance2(depart, arrivee, intensites, nb_intensite);
+	milieu = depart.getPixel(nb_pixels+nb_pixels*depart.getLargeur());
+	/*std::cout<<"LA : "<<nb_pixels<< " " <<depart.getLargeur()<<std::endl;
+	std::cout<<nb_pixels+nb_pixels*depart.getLargeur()<<std::endl;*/
+	int valeur;
+	
+	for(int i=0; i<=valeur_max; i++)
+	{
+		if(intensites[i]==milieu)
+			valeur = i;
+	}
+	
+	return intensites[valeurs[i]];
+	
+	
+	//return correspondance2(depart, intensites, nb_intensite);
 }
 
 

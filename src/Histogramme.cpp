@@ -69,7 +69,7 @@ void Histogramme::setNombrePixels(int nombrePixels, int nb_intensite)
 
 	valeur_max = nb_intensite-1;
 	
-	for(int i=0; i<=nb_intensite-1; i++)
+	for(int i=0; i<nb_intensite; i++)
 	{
 		cumul = 0;
 		for(int j=i; j<frequence+i; j++)

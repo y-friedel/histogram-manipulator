@@ -331,12 +331,15 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max)
+void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels)
 {
 
 	//On créé une nouvelle image à la taille de la fenetre
 	int largeur = X_max-X_min+1;
 	int hauteur = Y_max-Y_min+1;
+	int milieu = hauteur/2;
+	int pixel;
+	//std::cout<<hauteur
 	
 	int largeur_Depart = depart.getLargeur();
 	std::vector<int> valeurs = std::vector<int>();
@@ -361,17 +364,23 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 
 	//on appelle specification sur notre fenetre
 	Fonction fonction = Fonction(intensites.size());
+	
+	
+	
 
-	fonction.specification2(fenetre, fenetre, histo_fenetre, intensites, cible, depart.getValeurMax());
-
+	pixel = fonction.specification2(fenetre, histo_fenetre, intensites, cible, depart.getValeurMax(), nb_pixels);
+	
+	arrivee.setPixel(indice, pixel);
 	//On remplace les pixels dans notre nouvelle image	
-	for(int j=Y_min; j<=Y_max; j++)
+/*	for(int j=Y_min; j<=Y_max; j++)
 	{
 		for(int i=X_min; i<=X_max; i++)
 		{ 
 			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel((j-Y_min)*largeur+i-X_min));
 		}	  
-	}	
+	}	*/
+
+	//On remplace le pixel du milieu dans notre nouvelle image
 	
 }
 
@@ -384,93 +393,17 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	fenetre.setHauteur(nb_pixels*2+1);
 	fenetre.setLargeur(nb_pixels*2+1);
 	
-	for(int j=0; j< depart.getHauteur()+nb_pixels; j++)
+	for(int j=nb_pixels; j< depart.getHauteur()+nb_pixels; j++)
 	{
-		for(int i=0; i< depart.getLargeur()+nb_pixels; i++)
+		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
 		{
-			specificationDansFenetre(arrivee, temp, cible, i, i+nb_pixels, j, j+nb_pixels);
+			specificationDansFenetre(temp, arrivee, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
 			
 		}
 		
 	}
 
-	//specificationDansFenetre(arrivee, arrivee, cible, 0, nb_pixels, 0, nb_pixels);
-  
-//Image temp = Image(arrivee);
 	couper_image(temp, arrivee, nb_pixels);
-	
-	//arrivee.saveAscii("./data/versionGlissante.pgm");
-
- // couper_image(temp, arrivee, nb_pixels);
-
-  
-	/*arrivee = Image(depart);
-
-	for(int j=0; j< depart.getHauteur(); j++)
-	{
-		for(int i=0; i< depart.getLargeur(); i++)
-		{
-		//début de ligne
-			if (i==0)
-			{
-				//debut de colonne
-				if (j==0)
-				{
-std::cout<<"ETAPE : 1"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, 0, pixel_Cote);				
-				}
-				//fin de colonne
-				else if (j==depart.getHauteur())
-				{
-std::cout<<"ETAPE : 2"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j);
-				}else
-				{
-std::cout<<"ETAPE : 3"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, 0, pixel_Cote, j-pixel_Cote, j+pixel_Cote);
-				}
-		
-
-			}else if (i==depart.getLargeur()) //fin de ligne
-			{
-				//debut de colonne
-				if (j==0)
-				{
-std::cout<<"ETAPE : 4"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, 0, pixel_Cote);	
-				}
-				//fin de colonne
-				else if (j==depart.getHauteur())
-				{
-std::cout<<"ETAPE : 5"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j);
-				}else
-				{
-std::cout<<"ETAPE : 6"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i, j-pixel_Cote, j+pixel_Cote);
-				}
-			}else
-			{		
-				//debut de colonne
-				if (j==0)
-				{
-std::cout<<"ETAPE : 7"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, 0, pixel_Cote);	
-				}
-				//fin de colonne
-				else if (j==depart.getHauteur())
-				{
-std::cout<<"ETAPE : 8"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j);
-				}else
-				{
-std::cout<<"ETAPE : 9"<<std::endl;
-					specificationDansFenetre(arrivee, arrivee, cible, i-pixel_Cote, i+pixel_Cote, j-pixel_Cote, j+pixel_Cote);
-				}
-			}
-		}
-	}*/
-
 }
 
 
