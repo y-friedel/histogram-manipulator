@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 
-const QString PATH("../data/");
+const QString PATH("./data/");
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -106,8 +106,8 @@ void MainWindow::apply_filter()
         }
 
         //Chargement de l'image dans le label d'arrivée
-        output.saveBin("../data/output_qt.pgm");
-        img.saveBin("../data/img_qt.pgm");
+        output.saveBin(PATH.toStdString() + "output_qt.pgm");
+        img.saveBin(PATH.toStdString() + "img_qt.pgm");
 
         QString name_o = QString(PATH + "output_qt.pgm");
 

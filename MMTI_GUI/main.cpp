@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+#include <cstdio>
 //#include "qmlapplicationviewer.h"
 
 #include "Image.hpp"
@@ -14,7 +15,17 @@
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-	bool graphic = 0;
+    int option;
+    bool graphic = 0;
+    while ((option = getopt(argc, argv, "g")) != EOF)
+    {
+            switch (option)
+            {
+              case 'g': graphic = 1;
+                        break;
+            }
+    }
+
 	if(graphic)
 	{
 	
