@@ -397,7 +397,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	{
 		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
 		{
-			specificationDansFenetre(temp, arrivee, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
+			specificationDansFenetre(temp, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
 			
 		}
 		

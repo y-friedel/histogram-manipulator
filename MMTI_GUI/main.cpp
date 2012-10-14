@@ -156,7 +156,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		traitement.diffusionErreurMatrice(image, image1, floyd_steinberg);
 		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
 		
-		traitement.versionGlissante(image, image1, newHisto, 1);
+		
+		traitement.versionGlissante(image, image1, newHisto, 3);
 		
 		image1.saveAscii("./data/versionGlissante.pgm");
 		
