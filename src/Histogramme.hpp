@@ -28,8 +28,9 @@ private :
 	
 	std::vector<int> retrecirHistogramme();
 	void agrandirHistogramme(std::vector<int> intensites, int nb_intensite);
-
-	void setNombrePixels(int nombrePixels, int nb_intensite);	
+	
+	void setNombrePixels(int nombrePixels);	
+	void setNombrePixels2(int nombrePixels, int nb_intensite);	
 
 	void cumul();
 

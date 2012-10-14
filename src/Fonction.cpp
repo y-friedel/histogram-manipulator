@@ -141,14 +141,14 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 { 
 	//cumulDepart sera l'histogramme cumulé de l'image depart
 	Histogramme cumulDepart = Histogramme(depart);
+
 	//On calcul l'histogramme cumulé de l'histogramme de depart	
 	cumulDepart.cumul();
+	
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
-	cible.setNombrePixels(cumulDepart.getValeur(valeur_max), valeur_max);
+	cible.setNombrePixels(cumulDepart.getValeur(valeur_max));
 
-	//cible.exporter_TXT("cible.txt");
 	//On calcul l'histogramme cumulé de l'histogramme cible
-	//Histogramme cumulCible = Histogramme(cible);
 	cible.cumul();
 	//On applique l'algorithme vu dans le cours
 	int i=0;
@@ -167,7 +167,7 @@ void Fonction::specification(const Image& depart, Image &arrivee, Histogramme& c
 	//On appelle la fonction de correspondance
 	correspondance(depart, arrivee);
 }
-//const Image& depart, Image &arrivee, const Histogramme& depart, std::vector<int> intensites, Histogramme& cible)
+
 
 int Fonction::specification2(const Image& depart, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite, int nb_pixels)
 { 
@@ -181,11 +181,10 @@ int Fonction::specification2(const Image& depart, const Histogramme& histo_depar
 	cumulDepart.cumul();
 
 	//On normalise l'histogramme cible (cumul de depart = cumul d'arrive)
-	temp.setNombrePixels(cumulDepart.getValeur(cumulDepart.getValeurMax()), cumulDepart.getValeurMax());
+	temp.setNombrePixels2(cumulDepart.getValeur(cumulDepart.getValeurMax()), cumulDepart.getValeurMax());
 
 	//On calcul l'histogramme cumulé de l'histogramme cible
 	temp.cumul();
-	
 	
 	//On applique l'algorithme vu dans le cours
 	int i=0;
@@ -202,20 +201,16 @@ int Fonction::specification2(const Image& depart, const Histogramme& histo_depar
 	}
 
 	milieu = depart.getPixel(nb_pixels+nb_pixels*depart.getLargeur());
-	/*std::cout<<"LA : "<<nb_pixels<< " " <<depart.getLargeur()<<std::endl;
-	std::cout<<nb_pixels+nb_pixels*depart.getLargeur()<<std::endl;*/
+
 	int valeur;
 	
 	for(int i=0; i<=valeur_max; i++)
 	{
-		if(intensites[i]==milieu)
+		if(intensites[valeurs[i]]==milieu)
 			valeur = i;
 	}
 	
-	return intensites[valeurs[i]];
-	
-	
-	//return correspondance2(depart, intensites, nb_intensite);
+	return intensites[i];
 }
 
 

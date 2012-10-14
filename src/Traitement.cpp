@@ -254,7 +254,6 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 	arrivee = Image(depart);
 	int nouveau_px;
 	int ancien_px;
-	double repercussion;
 	int moyenne = depart.getValeurMax()/2;
 	
 	Traitement traitement = Traitement();
@@ -285,7 +284,6 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 							nouveau_px = depart.getValeurMax();
 					  
 						erreur = ancien_px - nouveau_px;
-						repercussion = matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
 						nouveau_px = arrivee.getPixel(indice) + erreur*matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
 						arrivee.setPixel(indice, abs(nouveau_px));
 					}
@@ -331,15 +329,76 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
  * 
  * 	Pas besoin de s'inquieter de la taille ou de la valeur_max de l'image d'arrivée
  */
-void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels)
+void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max)
 {
 
 	//On créé une nouvelle image à la taille de la fenetre
 	int largeur = X_max-X_min+1;
 	int hauteur = Y_max-Y_min+1;
-	int milieu = hauteur/2;
+	
+	int largeur_Depart = depart.getLargeur();
+	std::vector<int> valeurs = std::vector<int>();
+	
+	valeurs.resize(largeur*hauteur);
+
+	for(int j=Y_min; j<=Y_max; j++)
+	{
+		for(int i=X_min; i<=X_max; i++)
+		{
+			valeurs[(j-Y_min)*largeur+i-X_min] = depart.getPixel(largeur_Depart*j+i);
+		}
+	}
+
+	Image fenetre = Image(valeurs, depart.getFormat(), largeur, hauteur, depart.getValeurMax());
+
+	//Histogramme histo_fenetre = Histogramme(fenetre);
+
+	//on appelle specification sur notre fenetre
+	Fonction fonction = Fonction(depart.getValeurMax());
+	
+	fonction.specification(fenetre, fenetre, cible);
+	
+	
+	//On remplace les pixels dans notre nouvelle image
+		
+	for(int j=Y_min; j<=Y_max; j++)
+	{
+
+		for(int i=X_min; i<=X_max; i++)
+		{ 
+			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel((j-Y_min)*largeur+i-X_min));
+		}	  
+	}
+}
+
+
+void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
+{
+	miroir(depart, arrivee, nb_pixels);
+	Image temp = Image(arrivee);
+	Image fenetre;
+	fenetre.setHauteur(nb_pixels*2+1);
+	fenetre.setLargeur(nb_pixels*2+1);
+	
+	for(int j=nb_pixels; j< depart.getHauteur()+nb_pixels; j++)
+	{
+		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
+		{
+			specificationDansFenetre(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels);
+		}
+		
+	}
+
+	couper_image(temp, arrivee, nb_pixels);
+}
+
+void Traitement::specificationDansFenetre2(const Image& depart, Image& arrivee, Histogramme& cible, int X_min, int X_max, int Y_min, int Y_max, int indice, int nb_pixels)
+{
+
+	//On créé une nouvelle image à la taille de la fenetre
+	int largeur = X_max-X_min+1;
+	int hauteur = Y_max-Y_min+1;
 	int pixel;
-	//std::cout<<hauteur
 	
 	int largeur_Depart = depart.getLargeur();
 	std::vector<int> valeurs = std::vector<int>();
@@ -371,21 +430,10 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	pixel = fonction.specification2(fenetre, histo_fenetre, intensites, cible, depart.getValeurMax(), nb_pixels);
 	
 	arrivee.setPixel(indice, pixel);
-	//On remplace les pixels dans notre nouvelle image	
-/*	for(int j=Y_min; j<=Y_max; j++)
-	{
-		for(int i=X_min; i<=X_max; i++)
-		{ 
-			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel((j-Y_min)*largeur+i-X_min));
-		}	  
-	}	*/
-
-	//On remplace le pixel du milieu dans notre nouvelle image
-	
 }
 
 
-void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
+void Traitement::versionGlissante2(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
 {
 	miroir(depart, arrivee, nb_pixels);
 	Image temp = Image(arrivee);
@@ -397,7 +445,7 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 	{
 		for(int i=nb_pixels; i< depart.getLargeur()+nb_pixels; i++)
 		{
-			specificationDansFenetre(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
+			specificationDansFenetre2(arrivee, temp, cible, i-nb_pixels, i+nb_pixels, j-nb_pixels, j+nb_pixels, arrivee.getLargeur()*j+i, nb_pixels);
 			
 		}
 		
@@ -405,8 +453,5 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 
 	couper_image(temp, arrivee, nb_pixels);
 }
-
-
-
 
 

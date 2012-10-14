@@ -26,7 +26,7 @@ public :
 	
 	void specification(const Image& depart, Image &arrivee, Histogramme& cible);
 	int specification2(const Image& depart, const Histogramme& histo_depart, std::vector<int> intensites, Histogramme& cible, int nb_intensite, int nb_pixels);
-	//void specification2(const Histogramme& depart, Histogramme& cible);
+	
 	void egalisation(const Image& depart, Image &arrivee);	
 	
 	

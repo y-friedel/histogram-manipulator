@@ -92,14 +92,14 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		image1.saveAscii("./data/t2b.pgm");*/
 
 
-		Histogramme histo1 = Histogramme(image1);
+		/*Histogramme histo1 = Histogramme(image1);
 		histo1.exporter_TXT("./data/Hspecification.txt");
 		
 		fonction.egalisation(image, image1);
 		image1.saveAscii("./data/egalisation.pgm");
 		
 		Histogramme histo2 = Histogramme(image1);
-		histo2.exporter_TXT("./data/Hegalisation.txt");	
+		histo2.exporter_TXT("./data/Hegalisation.txt");	*/
 		
 		
 	/*	Image image2;
@@ -136,7 +136,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		tableau_droit.push_back(2);
 		tableau_droit.push_back(1);
 		
-		MatriceErreur stucki = MatriceErreur(tableau_gauche, tableau_droit, 2);
+	/*	MatriceErreur stucki = MatriceErreur(tableau_gauche, tableau_droit, 2);
 		
 		traitement.diffusionErreurMatrice(image, image1, stucki);
 		image1.saveAscii("./data/diffusionErreurMatrice.pgm");
@@ -148,7 +148,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		tableau_droit2.push_back(0);
 		tableau_droit2.push_back(7);
 		tableau_droit2.push_back(5);
-		tableau_droit2.push_back(1);
+		tableau_droit2.push_back(1);*/
 
 		
 		/*MatriceErreur floyd_steinberg = MatriceErreur(tableau_gauche2, tableau_droit2, 1);
@@ -157,7 +157,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
 		
 		
-		traitement.versionGlissante(image, image1, newHisto, 3);
+		traitement.versionGlissante(image, image1, newHisto, 40);
+		
+		/*traitement.specificationDansFenetre(image, image1, newHisto, 0, 5, 0, 5, 12, 2);*/
 		
 		image1.saveAscii("./data/versionGlissante.pgm");
 		
