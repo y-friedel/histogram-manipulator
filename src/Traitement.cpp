@@ -255,14 +255,19 @@ arrivee.saveAscii("./data/diffusionErreur.pgm");
 void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Matrice matrice)
 {
 	arrivee = Image(depart);
-	Image erreurdiffusee = Image(depart);
+	//Image temporaire = Image(depart);
+	int nouveau_px;
+	int ancien_px;
+	double repercussion;
+	int moyenne = depart.getValeurMax()/2;
+	
 	Traitement traitement = Traitement();
 	traitement.miroir(depart, arrivee, matrice.getNbPixelsCote());
 	//arrivee.miroir();
-	
+	arrivee.saveAscii("./data/diffusionErreur.pgm");
 	//On applique diffusion d'erreur sur depart
 	//arrivee devient l'image avec les erreurs diffusées
-	diffusionErreur(depart, erreurdiffusee);
+	//diffusionErreur(depart, arrivee);
 	
 	int erreur;
 	int nb_pixels_cote = matrice.getNbPixelsCote();
@@ -273,39 +278,77 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 	{
 		for(int i=nb_pixels_cote; i< depart.getLargeur()+nb_pixels_cote; i++)
 		{
-			indice = erreurdiffusee.getLargeur()*j+i;
-			erreur = erreurdiffusee.getPixel(indice)*arrivee.getPixel(indice);
-			
+			ancien_px = arrivee.getPixel(arrivee.getLargeur()*j+i);
 			
 			for(int k=0; k<nb_pixels_cote+1; k++)
 			{
 				for(int l=0; l<nb_pixels_cote+1; l++)
 				{
 					if((k!=0)&&(l!=0))
-					{
-						nouvelle_valeur = erreurdiffusee.getPixel(erreurdiffusee.getLargeur()*(k+j) + (l+i));
+					{ 
+						indice = arrivee.getLargeur()*(j)+(l+i);
+					  
+						if(ancien_px<=moyenne)
+							nouveau_px = 0;
+						else
+							nouveau_px = depart.getValeurMax();
+					  
+						erreur = ancien_px - nouveau_px;
+					  
+						repercussion = matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
+					  
+						nouveau_px = arrivee.getPixel(indice) + erreur*matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte();
+			
+						std::cout<<matrice.getValeurDroit(l*(nb_pixels_cote)+k)<<"/"<<matrice.getCompte()<<" = "<<repercussion<<std::endl;
+					      
+					/*	nouvelle_valeur = arrivee.getPixel(arrivee.getLargeur()*(k+j) + (l+i));
 						nouvelle_valeur =  nouvelle_valeur + matrice.getValeurDroit(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
-						arrivee.setPixel(arrivee.getLargeur()*(k+j)+(l+i), nouvelle_valeur);
+						*/
+						std::cout<<" Nouvelle : "<<nouveau_px<<std::endl;
+						arrivee.setPixel(indice, nouveau_px);
+					}
+				}
+				
+				
+				for(int k=0; k<nb_pixels_cote; k++)
+				{
+				  
+					for(int l=0; l<nb_pixels_cote; l++)
+					{
+						indice = arrivee.getLargeur()*(j+1)+(l+i-nb_pixels_cote);
+					  
+						if(ancien_px<=moyenne)
+							nouveau_px = 0;
+						else
+							nouveau_px = depart.getValeurMax();
+					  
+						erreur = ancien_px - nouveau_px;
+					  
+						nouveau_px = arrivee.getPixel(indice) + erreur*matrice.getValeurGauche(k*(nb_pixels_cote-1)+l)/matrice.getCompte();
+			
+						std::cout<<matrice.getValeurGauche(l*(nb_pixels_cote-1)+k)<<"/"<<matrice.getCompte()<<" = "<<repercussion<<std::endl;
+						
+						arrivee.setPixel(indice, nouveau_px);
 					}
 				}
 			}
 			
+			if(arrivee.getPixel(arrivee.getLargeur()*j+i)<=moyenne)
+				arrivee.setPixel(arrivee.getLargeur()*j+i,0);
+			else
+				arrivee.setPixel(arrivee.getLargeur()*j+i, arrivee.getValeurMax());
 			
-			for(int k=0; k<nb_pixels_cote; k++)
-			{
-				for(int l=0; l<nb_pixels_cote; l++)
-				{
-					nouvelle_valeur = erreurdiffusee.getPixel(arrivee.getLargeur()*(k+j+1)+(l+i-nb_pixels_cote));
-					nouvelle_valeur =  nouvelle_valeur + matrice.getValeurGauche(k*(nb_pixels_cote+1)+l)/matrice.getCompte()*erreur;
-					arrivee.setPixel(arrivee.getLargeur()*(k+j)+(l+i-nb_pixels_cote), nouvelle_valeur);
-				}
-			}
+
 			//A remplir
 			
-			/*pixel(x+1][y) := pixel[x+1][y] + 7/16 * quant_error
-			 * pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
-			 *pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
-			 *pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
+			/*  oldpixel := pixel[x][y]
+			    newpixel := find_closest_palette_color(oldpixel)
+			    pixel[x][y] := newpixel
+			    quant_error := oldpixel - newpixel
+			    pixel[x+1][y] := pixel[x+1][y] + 7/16 * quant_error
+			    pixel[x-1][y+1] := pixel[x-1][y+1] + 3/16 * quant_error
+			    pixel[x][y+1] := pixel[x][y+1] + 5/16 * quant_error
+			    pixel[x+1][y+1] := pixel[x+1][y+1] + 1/16 * quant_error
 			 */
 		}		
 	}	
