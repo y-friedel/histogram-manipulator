@@ -24,7 +24,6 @@ Histogramme::Histogramme(const Image& _img)
 	for(int i = 0; i<(_img.getLargeur() * _img.getHauteur()); i++)
 	{
 		valeurs[_img.getPixel(i)] = valeurs[_img.getPixel(i)] + 1;
-		//std::cout << /*img.getPixel(i)*/ img.getValeurMax() << std::endl;
 	}
 
 }
@@ -61,14 +60,13 @@ void Histogramme::setNombrePixels(int nombrePixels, int nb_intensite)
 	int cumul;
 	int val_cumul = 0;
 	int reste;
-	exporter_TXT("./data/histo0.txt");
+
 	Histogramme histo = Histogramme(valeurs);
-	histo.exporter_TXT("./data/histo1.txt");
-	//std::vector<int> nouvelles_valeurs = std::vector<int>();
-	int frequence = valeur_max/nb_intensite;
+
+	int frequence = valeur_max/(nb_intensite+1);
+
 	valeurs.resize(nb_intensite);
-	
-	std::cout<<"FREQUENCE : "<<frequence<<" INTENSITE : "<< nb_intensite<<std::endl;
+
 	valeur_max = nb_intensite-1;
 	
 	for(int i=0; i<=nb_intensite-1; i++)
@@ -79,18 +77,15 @@ void Histogramme::setNombrePixels(int nombrePixels, int nb_intensite)
 		valeurs[i] = cumul;
 		//std::cout<<cumul<<std::endl;
 	}
-for(int i=0; i<=valeur_max; i++)
-	
-	std::cout<<valeurs[i]<<" "<<valeur_max<<std::endl;
+
 
 
 	cumul = 0;
 	for(int i=0; i<=valeur_max; i++)
 	{
 		cumul += valeurs[i]; 
-		
 	}
-	std::cout<<cumul<<std::endl;
+	
 	if(cumul<valeur_max)
 	{
 		for(int i=0; i<=cumul; i++)
@@ -104,7 +99,6 @@ for(int i=0; i<=valeur_max; i++)
 		{
 			setValeur(i, nombrePixels*valeurs[i]);
 			setValeur(i, valeurs[i]/cumul);
-
 			val_cumul += valeurs[i];
 		}
 		reste = nombrePixels-val_cumul;
@@ -304,19 +298,20 @@ std::vector<int> Histogramme::retrecirHistogramme()
 	std::vector<int> _valeurs = std::vector<int>();
 	std::vector<int> intensites = std::vector<int>();
 
+	int compt = 0;
+	
 	for(int i=0; i<=valeur_max; i++)
 	{
 		if(valeurs[i] != 0)
 		{
 			_valeurs.push_back(valeurs[i]);
 			intensites.push_back(i);
+			compt += valeurs[i];
 		}
 	}
-	
 	valeurs = _valeurs;
 	valeur_max = _valeurs.size()-1;
-	
-  exporter_TXT("./data/retrecirHistogramme.txt");
+
 	return intensites;
 }
 
@@ -324,6 +319,7 @@ std::vector<int> Histogramme::retrecirHistogramme()
 void Histogramme::agrandirHistogramme(std::vector<int> intensites, int nb_intensite)
 {	
 	std::vector<int> _valeurs = valeurs;
+	valeurs.clear();
 	valeurs.resize(nb_intensite);	
 	valeur_max = nb_intensite;
 	

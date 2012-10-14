@@ -291,7 +291,6 @@ void Traitement::diffusionErreurMatrice(const Image& depart, Image& arrivee, Mat
 					}
 				}
 				
-				
 				for(int k=0; k<nb_pixels_cote; k++)
 				{
 				  
@@ -355,38 +354,31 @@ void Traitement::specificationDansFenetre(const Image& depart, Image& arrivee, H
 	Image fenetre = Image(valeurs, depart.getFormat(), largeur, hauteur, depart.getValeurMax());
 	
 	Histogramme histo_fenetre = Histogramme(fenetre);
-	histo_fenetre.exporter_TXT("./data/Premier.txt");
+
 	std::vector<int> intensites = std::vector<int>();
-	
-//	std::cout<< histo_fenetre.getValeurMax() << "  ";
-	
+
 	intensites = histo_fenetre.retrecirHistogramme();
-	histo_fenetre.exporter_TXT("./data/Deuxieme.txt");
-	
-	//std::cout<< histo_fenetre.getValeurMax() << std::endl;
+
 	//on appelle specification sur notre fenetre
 	Fonction fonction = Fonction(intensites.size());
 
-	fonction.specification(histo_fenetre, cible);
-	
-	
-	//On remplace les pixels dans notre nouvelle image
-/*	
+	fonction.specification2(fenetre, fenetre, histo_fenetre, intensites, cible, depart.getValeurMax());
+
+	//On remplace les pixels dans notre nouvelle image	
 	for(int j=Y_min; j<=Y_max; j++)
 	{
-
 		for(int i=X_min; i<=X_max; i++)
 		{ 
 			arrivee.setPixel(depart.getLargeur()*j+i, fenetre.getPixel((j-Y_min)*largeur+i-X_min));
 		}	  
-	}*/
+	}	
+	
 }
 
 
 void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogramme& cible, int nb_pixels)
 {
 	miroir(depart, arrivee, nb_pixels);
-	arrivee.saveAscii("./data/test.pgm");
 	Image temp = Image(arrivee);
 	Image fenetre;
 	fenetre.setHauteur(nb_pixels*2+1);
@@ -397,13 +389,17 @@ void Traitement::versionGlissante(const Image& depart, Image& arrivee, Histogram
 		for(int i=0; i< depart.getLargeur()+nb_pixels; i++)
 		{
 			specificationDansFenetre(arrivee, temp, cible, i, i+nb_pixels, j, j+nb_pixels);
+			
 		}
 		
 	}
 
 	//specificationDansFenetre(arrivee, arrivee, cible, 0, nb_pixels, 0, nb_pixels);
   
-
+//Image temp = Image(arrivee);
+	couper_image(temp, arrivee, nb_pixels);
+	
+	//arrivee.saveAscii("./data/versionGlissante.pgm");
 
  // couper_image(temp, arrivee, nb_pixels);
 

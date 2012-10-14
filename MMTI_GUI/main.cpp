@@ -81,7 +81,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		Fonction fonction = Fonction(255);
 		
 		
-		Image image = Image("./data/rs.pgm");
+		Image image = Image("./data/rs2.pgm");
 		Image image1 = Image(image);
 
 		/*fonction.negatif(im, image1);
@@ -151,17 +151,16 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 		tableau_droit2.push_back(1);
 
 		
-		MatriceErreur floyd_steinberg = MatriceErreur(tableau_gauche2, tableau_droit2, 1);
+		/*MatriceErreur floyd_steinberg = MatriceErreur(tableau_gauche2, tableau_droit2, 1);
 		
 		traitement.diffusionErreurMatrice(image, image1, floyd_steinberg);
-		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");
+		image1.saveAscii("./data/diffusionErreurMatrice2.pgm");*/
 		
-	/*	traitement.versionGlissante(image, image1, newHisto, 3);
-		int t2 = clock();
-		std::cout<<(((float)t2/CLOCKS_PER_SEC)-((float)t1/CLOCKS_PER_SEC))<<std::endl;
+		traitement.versionGlissante(image, image1, newHisto, 2);
+		
 		image1.saveAscii("./data/versionGlissante.pgm");
 		
-		Histogramme nepastoucher = Histogramme("./data/nepastoucher.txt");*/
+		Histogramme nepastoucher = Histogramme("./data/nepastoucher.txt");
 		
 		
 		/*newHisto.setNombrePixels(16, 8);
